@@ -1,0 +1,3 @@
+[submodule "jaguarjs-jsdoc"]
+	path = jaguarjs-jsdoc
+	url = https://github.com/davidshimjs/jaguarjs-jsdoc.git

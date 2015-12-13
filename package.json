@@ -1,0 +1,26 @@
+{
+	"name": "ejs-html",
+	"version": "1.0.0",
+	"author": "Sitegui <sitegui@sitegui.com.br>",
+	"description": "Embedded JavaScript HTML templates. Another implementation of EJS, focused on run-time performance, basic HTML syntax checking and outputting minified HTML.",
+	"main": "./index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sitegui/ejs-html"
+	},
+	"keywords": ["ejs", "html", "template", "engine", "minification"],
+	"dependencies": {},
+	"license": "MIT",
+	"engines": {
+		"node": ">=4.2"
+	},
+	"scripts": {
+		"test": "mocha test",
+		"docs": "jsdoc -d docs -c docs.json -R README.md -t jaguarjs-jsdoc"
+	},
+	"devDependencies": {
+		"jsdoc": "^3.4.0",
+		"mocha": "^2.3.4",
+		"should": "^8.0.1"
+	}
+}
