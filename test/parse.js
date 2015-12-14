@@ -133,7 +133,7 @@ describe('parse', function () {
 
 	it('should parse open tags with dynamic attributes', function () {
 		let lines = [
-				'<with-ejs attr="pre<%=code%>post" <% if (showA) { %>',
+				'<with-ejs attr="pre<%=code%><%code%>post" <% if (showA) { %>',
 				'a',
 				'<% } %>',
 				'<%=code%>>'
@@ -158,13 +158,18 @@ describe('parse', function () {
 					start: getPos('<with-ejs attr="pre<%='),
 					end: getPos('<with-ejs attr="pre<%=code')
 				}, {
+					type: 'ejs-eval',
+					content: 'code',
+					start: getPos('<with-ejs attr="pre<%=code%><%'),
+					end: getPos('<with-ejs attr="pre<%=code%><%code')
+				}, {
 					type: 'text',
 					content: 'post'
 				}]
 			}, {
 				type: 'ejs-eval',
-				start: getPos('<with-ejs attr="pre<%=code%>post" <%'),
-				end: getPos('<with-ejs attr="pre<%=code%>post" <% if (showA) { '),
+				start: getPos('<with-ejs attr="pre<%=code%>post<%code%>" <%'),
+				end: getPos('<with-ejs attr="pre<%=code%>post<%code%>" <% if (showA) { '),
 				content: ' if (showA) { '
 			}, {
 				type: 'attribute-simple',
