@@ -96,10 +96,10 @@ describe('parse', function () {
 	})
 
 	it('should parse open tags with literal attributes', function () {
-		parse('<simple a=no-quote b=\'single qu<o>te\' c="double qu<o>te" d />').should.be.eql([{
+		parse('<simple a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" e />').should.be.eql([{
 			type: 'tag-open',
 			start: getPos('<'),
-			end: getPos('<simple a=no-quote b=\'single qu<o>te\' c="double qu<o>te" d />'),
+			end: getPos('<simple a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" e />'),
 			name: 'simple',
 			selfClose: true,
 			attributes: [{
@@ -110,16 +110,21 @@ describe('parse', function () {
 			}, {
 				type: 'attribute-simple',
 				name: 'b',
-				value: 'single qu<o>te',
+				value: 's<i>ngle',
 				quote: '\''
 			}, {
 				type: 'attribute-simple',
 				name: 'c',
-				value: 'double qu<o>te',
+				value: 'd<o>uble',
 				quote: '"'
 			}, {
 				type: 'attribute-simple',
 				name: 'd',
+				value: '',
+				quote: '"'
+			}, {
+				type: 'attribute-simple',
+				name: 'e',
 				value: '',
 				quote: ''
 			}]
