@@ -85,6 +85,30 @@ describe('reduce', function () {
 			}, '>'
 		])
 	})
+
+	it('should normalize whitespace between attributes', function () {
+		minify('<a    b\n\t  \tc>').should.be.equal('<a b c>')
+	})
+
+	it('should collapse whitespaces in html text', function () {
+		minify('   no\n   need    for   spaces   ', {
+			collapseText: true
+		}).should.be.equal(' no\nneed for spaces ')
+
+		minify('even <%a%> between <%x%> js ta<%g%>s', {
+			collapseText: true
+		}).should.be.equal('even <%a%>between <%x%>js ta<%g%>s')
+	})
+
+	it('should collapse whitespace in class attribute', function () {
+		minify('<a class="a   b \n\t c  ">', {
+			collapseAttribute: true
+		}).should.be.equal('<a class="a b c">')
+
+		minify('<a class="a <%%>  b<%%>d \n<%%>\t c  ">', {
+			collapseAttribute: true
+		}).should.be.equal('<a class="a <%%> b<%%>d <%%> c">')
+	})
 })
 
 function getPos(str) {
@@ -94,4 +118,14 @@ function getPos(str) {
 		line: lines.length,
 		column: lines[lines.length - 1].length + 1
 	}
+}
+
+function minify(source, options) {
+	return reduce(parse(source), options).map(e => {
+		if (typeof e === 'string') {
+			return e
+		}
+		let c = e.type === 'ejs-eval' ? '' : (e.type === 'ejs-raw' ? '-' : '=')
+		return `<%${c}${e.content}%>`
+	}).join('')
 }
