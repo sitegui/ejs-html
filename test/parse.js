@@ -105,19 +105,23 @@ describe('parse', function () {
 			attributes: [{
 				type: 'attribute-simple',
 				name: 'a',
-				value: 'no-quote'
+				value: 'no-quote',
+				quote: ''
 			}, {
 				type: 'attribute-simple',
 				name: 'b',
-				value: 'single qu<o>te'
+				value: 'single qu<o>te',
+				quote: '\''
 			}, {
 				type: 'attribute-simple',
 				name: 'c',
-				value: 'double qu<o>te'
+				value: 'double qu<o>te',
+				quote: '"'
 			}, {
 				type: 'attribute-simple',
 				name: 'd',
-				value: ''
+				value: '',
+				quote: ''
 			}]
 		}])
 	})
@@ -139,6 +143,7 @@ describe('parse', function () {
 			attributes: [{
 				type: 'attribute',
 				name: 'attr',
+				quote: '"',
 				parts: [{
 					type: 'text',
 					content: 'pre'
@@ -159,7 +164,8 @@ describe('parse', function () {
 			}, {
 				type: 'attribute-simple',
 				name: 'a',
-				value: ''
+				value: '',
+				quote: ''
 			}, {
 				type: 'ejs-eval',
 				start: getPos(lines[0] + '\n' + lines[1] + '\n<%'),
