@@ -61,7 +61,9 @@ describe('reduce', function () {
 				'<%=code%>>'
 			],
 			source = lines.join('\n')
-		reduce(parse(source)).should.be.eql([
+		reduce(parse(source, {
+			allowEJSInOpenTags: true
+		})).should.be.eql([
 			'<with-ejs attr="pre', {
 				type: 'ejs-escaped',
 				content: 'code',

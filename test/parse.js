@@ -139,7 +139,9 @@ describe('parse', function () {
 				'<%=code%>>'
 			],
 			source = lines.join('\n')
-		parse(source).should.be.eql([{
+		parse(source, {
+			allowEJSInOpenTags: true
+		}).should.be.eql([{
 			type: 'tag-open',
 			start: getPos('<'),
 			end: getPos(source),
