@@ -109,6 +109,16 @@ describe('reduce', function () {
 			collapseAttribute: true
 		}).should.be.equal('<a class="a <%%> b<%%>d <%%> c">')
 	})
+
+	it('should collapse boolean attributes', function () {
+		minify('<a a="" checked=checked multiple>', {
+			boolAttribute: true
+		}).should.be.equal('<a a checked multiple>')
+
+		minify('<a checked="<%=checked%>">', {
+			boolAttribute: true
+		}).should.be.equal('<a<%if (checked) {%> checked<%}%>>')
+	})
 })
 
 function getPos(str) {
