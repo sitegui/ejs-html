@@ -133,9 +133,7 @@ describe('parse', function () {
 
 	it('should parse open tags with dynamic attributes', function () {
 		let source = '<with-ejs attr="pre<%=code%><%code%>post">'
-		parse(source, {
-			allowEJSInOpenTags: true
-		}).should.be.eql([{
+		parse(source).should.be.eql([{
 			type: 'tag-open',
 			start: getPos('<'),
 			end: getPos(source),
