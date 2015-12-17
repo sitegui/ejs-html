@@ -54,13 +54,7 @@ describe('reduce', function () {
 	})
 
 	it('should parse open tags with dynamic attributes', function () {
-		let lines = [
-				'<with-ejs attr="pre<%=code%>post" <% if (showA) { %>',
-				'a',
-				'<% } %>',
-				'<%=code%>>'
-			],
-			source = lines.join('\n')
+		let source = '<with-ejs attr="pre<%=code%>post">'
 		reduce(parse(source, {
 			allowEJSInOpenTags: true
 		})).should.be.eql([
@@ -69,22 +63,7 @@ describe('reduce', function () {
 				content: 'code',
 				start: getPos('<with-ejs attr="pre<%='),
 				end: getPos('<with-ejs attr="pre<%=code')
-			}, 'post"', {
-				type: 'ejs-eval',
-				start: getPos('<with-ejs attr="pre<%=code%>post" <%'),
-				end: getPos('<with-ejs attr="pre<%=code%>post" <% if (showA) { '),
-				content: ' if (showA) { '
-			}, ' a', {
-				type: 'ejs-eval',
-				start: getPos(lines[0] + '\n' + lines[1] + '\n<%'),
-				end: getPos(lines[0] + '\n' + lines[1] + '\n<% } '),
-				content: ' } '
-			}, ' ', {
-				type: 'ejs-escaped',
-				start: getPos(lines[0] + '\n' + lines[1] + '\n' + lines[2] + '\n<%='),
-				end: getPos(lines[0] + '\n' + lines[1] + '\n' + lines[2] + '\n<%=code'),
-				content: 'code'
-			}, '>'
+			}, 'post">'
 		])
 	})
 
