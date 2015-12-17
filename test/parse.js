@@ -191,27 +191,6 @@ describe('parse', function () {
 			}]
 		}])
 	})
-
-	it('should parse implicit quoted value', function () {
-		parse('<tag name=<%=value%>>').should.be.eql([{
-			type: 'tag-open',
-			start: getPos('<'),
-			end: getPos('<tag name=<%=value%>>'),
-			name: 'tag',
-			selfClose: false,
-			attributes: [{
-				type: 'attribute',
-				name: 'name',
-				quote: '"',
-				parts: [{
-					type: 'ejs-escaped',
-					start: getPos('<tag name=<%='),
-					end: getPos('<tag name=<%=value'),
-					content: 'value'
-				}]
-			}]
-		}])
-	})
 })
 
 function getPos(str) {
