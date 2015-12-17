@@ -11,7 +11,7 @@ Embedded JavaScript HTML templates. Another implementation of EJS, focused on ru
 ```js
 let ejs = require('ejs-html')
 
-let html = ejs.render('<input type="text" disabled=<%=disabled%> value=<%=value%>>', {
+let html = ejs.render('<input type="text" disabled="<%=disabled%>" value="<%=value%>">', {
 	disabled: false,
 	value = 'hi you'
 })
@@ -44,9 +44,6 @@ Errors during render-time are mapped back to their original source location (tha
 Attributes like `disabled` and `checked` are recognized as boolean. So one may write `disabled=<%=disabled%>` instead of `<%if(disabled){%>disabled<%}%>`, as they must in plain EJS.
 
 This is one point that makes this not EJS compliant. In EJS, anything literal text is outputed as is. In the example above this is not happens: the text `disabled=` is not outputed if the local value `disabled` is falsy, since ejs-html knows this is a boolean attribute.
-
-### Implied attribute quotes
-No need to quote EJS tags in attributes. Example: `<input value=<%=value%>>`. The double quote (") is implied for you.
 
 ### Server-side compiled, client-side rendered
 Compile the template server-side and export a function to render it in the client-side.
