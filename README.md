@@ -13,7 +13,7 @@ let ejs = require('ejs-html')
 
 let html = ejs.render('<input type="text" disabled="<%=disabled%>" value="<%=value%>">', {
 	disabled: false,
-	value = 'hi you'
+	value: 'hi you'
 })
 
 // html = '<input type=text value="hi you">'
