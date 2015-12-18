@@ -167,6 +167,28 @@ describe('parse', function () {
 			children: []
 		}])
 	})
+
+	it('should not parse tags inside scripts', function () {
+		parse('<scriPt><b>Not an element</c > </<> "<%=code%></scRipt>').should.be.eql([{
+			type: 'element',
+			start: getPos('<'),
+			end: getPos('<script><b>Not an element</c > </<> "<%=code%></script>'),
+			name: 'script',
+			isVoid: false,
+			attributes: [],
+			children: [{
+				type: 'text',
+				content: '<b>Not an element</c > </<> "',
+				start: getPos('<script>'),
+				end: getPos('<script><b>Not an element</c > </<> "')
+			}, {
+				type: 'ejs-escaped',
+				content: 'code',
+				start: getPos('<script><b>Not an element</c > </<> "<%='),
+				end: getPos('<script><b>Not an element</c > </<> "<%=code')
+			}]
+		}])
+	})
 })
 
 function getPos(str) {
