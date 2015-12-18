@@ -4,7 +4,7 @@
 let escape = require('../lib/escape')
 require('should')
 
-describe('parse', function () {
+describe('escape', function () {
 	it('should escape html', function () {
 		escape.html('a && b << c >> d "" e \'\' f').should.be
 			.equal('a &amp;&amp; b &lt;&lt; c &gt;&gt; d &#34;&#34; e &#39;&#39; f')

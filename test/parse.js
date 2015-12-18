@@ -63,85 +63,124 @@ describe('parse', function () {
 		}])
 	})
 
-	it('should parse close tags', function () {
-		parse('</tag-name></tagName >').should.be.eql([{
-			type: 'tag-close',
-			start: getPos('</'),
-			end: getPos('</tag-name'),
-			name: 'tag-name'
-		}, {
-			type: 'tag-close',
-			start: getPos('</tag-name></'),
-			end: getPos('</tag-name></tagName'),
-			name: 'tagName'
+	it('should parse basic element tags', function () {
+		parse('<div><input><input/><tag/></div>').should.be.eql([{
+			type: 'element',
+			start: getPos('<'),
+			end: getPos('<div><input><input/><tag/></div>'),
+			name: 'div',
+			isVoid: false,
+			selfClose: false,
+			attributes: [],
+			children: [{
+				type: 'element',
+				start: getPos('<div><'),
+				end: getPos('<div><input>'),
+				name: 'input',
+				isVoid: true,
+				selfClose: false,
+				attributes: [],
+				children: []
+			}, {
+				type: 'element',
+				start: getPos('<div><input><'),
+				end: getPos('<div><input><input/>'),
+				name: 'input',
+				isVoid: true,
+				selfClose: true,
+				attributes: [],
+				children: []
+			}, {
+				type: 'element',
+				start: getPos('<div><input><input/><'),
+				end: getPos('<div><input><input/><tag/>'),
+				name: 'tag',
+				isVoid: false,
+				selfClose: true,
+				attributes: [],
+				children: []
+			}]
 		}])
 	})
 
 	it('should parse simple open tags', function () {
-		parse('<open><self-close />').should.be.eql([{
-			type: 'tag-open',
+		parse('<open><self-close /></open>').should.be.eql([{
+			type: 'element',
 			start: getPos('<'),
-			end: getPos('<open>'),
+			end: getPos('<open><self-close /></open>'),
 			name: 'open',
+			isVoid: false,
 			selfClose: false,
-			attributes: []
-		}, {
-			type: 'tag-open',
-			start: getPos('<open><'),
-			end: getPos('<open><self-close />'),
-			name: 'self-close',
-			selfClose: true,
-			attributes: []
+			attributes: [],
+			children: [{
+				type: 'element',
+				start: getPos('<open><'),
+				end: getPos('<open><self-close />'),
+				name: 'self-close',
+				isVoid: false,
+				selfClose: true,
+				attributes: [],
+				children: []
+			}]
 		}])
 	})
 
 	it('should parse open tags with literal attributes', function () {
-		parse('<simple a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" e />').should.be.eql([{
-			type: 'tag-open',
+		parse('<simple a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" checked />').should.be.eql([{
+			type: 'element',
 			start: getPos('<'),
-			end: getPos('<simple a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" e />'),
+			end: getPos('<simple a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" checked />'),
 			name: 'simple',
+			isVoid: false,
 			selfClose: true,
 			attributes: [{
 				type: 'attribute-simple',
 				name: 'a',
+				isBoolean: false,
 				value: 'no-quote',
 				quote: ''
 			}, {
 				type: 'attribute-simple',
 				name: 'b',
+				isBoolean: false,
 				value: 's<i>ngle',
 				quote: '\''
 			}, {
 				type: 'attribute-simple',
 				name: 'c',
+				isBoolean: false,
 				value: 'd<o>uble',
 				quote: '"'
 			}, {
 				type: 'attribute-simple',
 				name: 'd',
+				isBoolean: false,
 				value: '',
 				quote: '"'
 			}, {
 				type: 'attribute-simple',
-				name: 'e',
+				name: 'checked',
+				isBoolean: true,
 				value: '',
 				quote: ''
-			}]
+			}],
+			children: []
 		}])
 	})
 
 	it('should parse open tags with dynamic attributes', function () {
-		let source = '<with-ejs attr="pre<%=code%><%code%>post">'
+		let source = '<with-ejs attr="pre<%=code%><%code%>post"/>'
 		parse(source).should.be.eql([{
-			type: 'tag-open',
+			type: 'element',
 			start: getPos('<'),
 			end: getPos(source),
 			name: 'with-ejs',
-			selfClose: false,
+			isVoid: false,
+			selfClose: true,
 			attributes: [{
 				type: 'attribute',
 				name: 'attr',
+				isBoolean: false,
 				quote: '"',
 				parts: [{
 					type: 'text',
@@ -160,7 +199,8 @@ describe('parse', function () {
 					type: 'text',
 					content: 'post'
 				}]
-			}]
+			}],
+			children: []
 		}])
 	})
 })

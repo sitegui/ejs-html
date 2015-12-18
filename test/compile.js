@@ -4,7 +4,7 @@
 let compile = require('../lib/compile')
 require('should')
 
-describe('parse', function () {
+describe('compile', function () {
 	it('should compile to run in the server', function () {
 		compile('Hi <b><%=name.first%></b> <%=name.last%>!')({
 			name: {
