@@ -11,7 +11,7 @@ Embedded JavaScript HTML templates. Another implementation of EJS, focused on ru
 ```js
 let ejs = require('ejs-html')
 
-let html = ejs.render('<input type="text" disabled="<%=disabled%>" value="<%=value%>">', {
+let html = ejs.render('<input type="text" disabled="<%=disabled%>" value="<%=value%>" />', {
 	disabled: false,
 	value: 'hi you'
 })
@@ -36,6 +36,7 @@ The template source is parsed and minified on compile time, so there is no impac
 * Normalize attributes spaces: `<input   required>` -> `<input required>`
 * Normalize class spaces: `<div class="  a   b">` -> `<div class="a b">`
 * Simplify boolean attributes: `<input required="oh-yeah!">` -> `<input required>`
+* Remove self-close slash: `<br />` -> `<br>`
 
 ### Render-time error mapping
 Errors during render-time are mapped back to their original source location (that is, we keep an internal source map)
@@ -49,25 +50,26 @@ This is one point that makes this not EJS compliant. In EJS, anything literal te
 Compile the template server-side and export a function to render it in the client-side.
 
 ### Extensible semantics
-Transformers may be registered to change the parsed token list and implement custom semantics.
+Transformers may be registered to change the parsed elements tree and implement custom semantics.
 
 For example:
 ```js
-// change B tags for STRONG
+// change I tags for EM
 
-var render = ejs.compile('<b>Hi</b>', {
-	transformers: [function (tokens) {
-		tokens.forEach(function (token) {
-			if ((token.type === 'tag-open' || token.type === 'tag-close') &&
-				token.name.toLowerCase() === 'b') {
-				token.name = 'strong'
+var render = ejs.compile('<i>Hi</i> <p><i>Deep</i></p>', {
+	transformer: function translate(tokens) {
+		tokens.forEach(token => {
+			if (token.type === 'element') {
+				if (token.name === 'i') {
+					token.name = 'em'
+				}
+				translate(token.children)
 			}
 		})
-		return tokens
-	}]
+	}
 })
 
-render() // '<strong>Hi</strong>'
+render() // '<em>Hi</em> <p><em>Deep</em></p>'
 ```
 
 ## Missing features
