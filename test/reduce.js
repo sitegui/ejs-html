@@ -66,33 +66,30 @@ describe('reduce', function () {
 	})
 
 	it('should collapse whitespaces in html text', function () {
-		minify('   no\n   need    for   spaces   ', {
-			collapseText: true
-		}).should.be.equal(' no\nneed for spaces ')
+		minify('   no\n   need    for   spaces   ').should.be.equal(' no\nneed for spaces ')
 
-		minify('even <%a%> between <%x%> js ta<%g%>s', {
-			collapseText: true
-		}).should.be.equal('even <%a%>between <%x%>js ta<%g%>s')
+		minify('even <%a%> between <%x%> js ta<%g%>s')
+			.should.be.equal('even <%a%>between <%x%>js ta<%g%>s')
 	})
 
 	it('should collapse whitespace in class attribute', function () {
-		minify('<a class="a   b \n\t c  "></a>', {
-			collapseAttribute: true
-		}).should.be.equal('<a class="a b c"></a>')
+		minify('<a class="a   b \n\t c  "></a>').should.be.equal('<a class="a b c"></a>')
 
-		minify('<a class="a <%%>  b<%%>d \n<%%>\t c  "></a>', {
-			collapseAttribute: true
-		}).should.be.equal('<a class="a <%%> b<%%>d <%%> c"></a>')
+		minify('<a class="a <%%>  b<%%>d \n<%%>\t c  "></a>')
+			.should.be.equal('<a class="a <%%> b<%%>d <%%> c"></a>')
 	})
 
 	it('should collapse boolean attributes', function () {
-		minify('<a a="" checked=checked multiple></a>', {
-			boolAttribute: true
-		}).should.be.equal('<a a checked multiple></a>')
+		minify('<a a="" checked=checked multiple></a>')
+			.should.be.equal('<a a checked multiple></a>')
 
-		minify('<a checked="<%=checked%>"></a>', {
-			boolAttribute: true
-		}).should.be.equal('<a<%if (checked) {%> checked<%}%>></a>')
+		minify('<a checked="<%=checked%>"></a>')
+			.should.be.equal('<a<%if (checked) {%> checked<%}%>></a>')
+	})
+
+	it('should keep whitespace inside <pre>-like tags', function () {
+		minify('  x  <pre>  x  <b>  x  </b>  </pre>  x  ')
+			.should.be.equal(' x <pre>  x  <b>  x  </b>  </pre> x ')
 	})
 })
 
