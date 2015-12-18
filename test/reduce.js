@@ -39,34 +39,30 @@ describe('reduce', function () {
 		reduce(parse('<!DOCTYPE html>')).should.be.eql(['<!DOCTYPE html>'])
 	})
 
-	it('should parse close tags', function () {
-		reduce(parse('</tag-name></tagName >')).should.be.eql(['</tag-name></tagName>'])
-	})
-
-	it('should parse simple open tags', function () {
-		reduce(parse('<open ><self-close   />')).should.be.eql(['<open><self-close/>'])
+	it('should parse basic element tags', function () {
+		reduce(parse('<div><input><input/></div >')).should.be.eql(['<div><input><input></div>'])
 	})
 
 	it('should parse open tags with literal attributes', function () {
-		let source = '<simple a=no-quote\nb=\'s<i>ngle\' c="d<o>ouble" bool=\'\' no-need="for"/>',
-			expected = '<simple a=no-quote b=\'s<i>ngle\' c="d<o>ouble" bool no-need=for />'
+		let source = '<div a="no-quote" \n b=\'s<i>ngle\' c="d<o>uble" d="" checked="yes!"></div>',
+			expected = '<div a=no-quote b=\'s<i>ngle\' c="d<o>uble" d checked></div>'
 		reduce(parse(source)).should.be.eql([expected])
 	})
 
 	it('should parse open tags with dynamic attributes', function () {
-		let source = '<with-ejs attr="pre<%=code%>post">'
+		let source = '<with-ejs attr="pre<%=code%>post"></with-ejs>'
 		reduce(parse(source)).should.be.eql([
 			'<with-ejs attr="pre', {
 				type: 'ejs-escaped',
 				content: 'code',
 				start: getPos('<with-ejs attr="pre<%='),
 				end: getPos('<with-ejs attr="pre<%=code')
-			}, 'post">'
+			}, 'post"></with-ejs>'
 		])
 	})
 
 	it('should normalize whitespace between attributes', function () {
-		minify('<a    b\n\t  \tc>').should.be.equal('<a b c>')
+		minify('<a    b\n\t  \tc></a>').should.be.equal('<a b c></a>')
 	})
 
 	it('should collapse whitespaces in html text', function () {
@@ -80,23 +76,23 @@ describe('reduce', function () {
 	})
 
 	it('should collapse whitespace in class attribute', function () {
-		minify('<a class="a   b \n\t c  ">', {
+		minify('<a class="a   b \n\t c  "></a>', {
 			collapseAttribute: true
-		}).should.be.equal('<a class="a b c">')
+		}).should.be.equal('<a class="a b c"></a>')
 
-		minify('<a class="a <%%>  b<%%>d \n<%%>\t c  ">', {
+		minify('<a class="a <%%>  b<%%>d \n<%%>\t c  "></a>', {
 			collapseAttribute: true
-		}).should.be.equal('<a class="a <%%> b<%%>d <%%> c">')
+		}).should.be.equal('<a class="a <%%> b<%%>d <%%> c"></a>')
 	})
 
 	it('should collapse boolean attributes', function () {
-		minify('<a a="" checked=checked multiple>', {
+		minify('<a a="" checked=checked multiple></a>', {
 			boolAttribute: true
-		}).should.be.equal('<a a checked multiple>')
+		}).should.be.equal('<a a checked multiple></a>')
 
-		minify('<a checked="<%=checked%>">', {
+		minify('<a checked="<%=checked%>"></a>', {
 			boolAttribute: true
-		}).should.be.equal('<a<%if (checked) {%> checked<%}%>>')
+		}).should.be.equal('<a<%if (checked) {%> checked<%}%>></a>')
 	})
 })
 
