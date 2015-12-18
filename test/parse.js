@@ -64,13 +64,12 @@ describe('parse', function () {
 	})
 
 	it('should parse basic element tags', function () {
-		parse('<div><input><input/><tag/></div>').should.be.eql([{
+		parse('<div><input><input/></div>').should.be.eql([{
 			type: 'element',
 			start: getPos('<'),
-			end: getPos('<div><input><input/><tag/></div>'),
+			end: getPos('<div><input><input/></div>'),
 			name: 'div',
 			isVoid: false,
-			selfClose: false,
 			attributes: [],
 			children: [{
 				type: 'element',
@@ -78,7 +77,6 @@ describe('parse', function () {
 				end: getPos('<div><input>'),
 				name: 'input',
 				isVoid: true,
-				selfClose: false,
 				attributes: [],
 				children: []
 			}, {
@@ -87,38 +85,6 @@ describe('parse', function () {
 				end: getPos('<div><input><input/>'),
 				name: 'input',
 				isVoid: true,
-				selfClose: true,
-				attributes: [],
-				children: []
-			}, {
-				type: 'element',
-				start: getPos('<div><input><input/><'),
-				end: getPos('<div><input><input/><tag/>'),
-				name: 'tag',
-				isVoid: false,
-				selfClose: true,
-				attributes: [],
-				children: []
-			}]
-		}])
-	})
-
-	it('should parse simple open tags', function () {
-		parse('<open><self-close /></open>').should.be.eql([{
-			type: 'element',
-			start: getPos('<'),
-			end: getPos('<open><self-close /></open>'),
-			name: 'open',
-			isVoid: false,
-			selfClose: false,
-			attributes: [],
-			children: [{
-				type: 'element',
-				start: getPos('<open><'),
-				end: getPos('<open><self-close />'),
-				name: 'self-close',
-				isVoid: false,
-				selfClose: true,
 				attributes: [],
 				children: []
 			}]
@@ -126,13 +92,12 @@ describe('parse', function () {
 	})
 
 	it('should parse open tags with literal attributes', function () {
-		parse('<simple a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" checked />').should.be.eql([{
+		parse('<div a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" checked></div>').should.be.eql([{
 			type: 'element',
 			start: getPos('<'),
-			end: getPos('<simple a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" checked />'),
-			name: 'simple',
+			end: getPos('<div a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" checked></div>'),
+			name: 'div',
 			isVoid: false,
-			selfClose: true,
 			attributes: [{
 				type: 'attribute-simple',
 				name: 'a',
@@ -169,14 +134,13 @@ describe('parse', function () {
 	})
 
 	it('should parse open tags with dynamic attributes', function () {
-		let source = '<with-ejs attr="pre<%=code%><%code%>post"/>'
+		let source = '<with-ejs attr="pre<%=code%><%code%>post"></with-ejs>'
 		parse(source).should.be.eql([{
 			type: 'element',
 			start: getPos('<'),
 			end: getPos(source),
 			name: 'with-ejs',
 			isVoid: false,
-			selfClose: true,
 			attributes: [{
 				type: 'attribute',
 				name: 'attr',
