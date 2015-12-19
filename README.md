@@ -31,12 +31,12 @@ Strictly speaking, this *is not* even EJS (details bellow).
 ### Compile-time HTML minification
 The template source is parsed and minified on compile time, so there is no impact on render-time. The minification applies these rules:
 
-* Collapse text whitespace: `<b>Hello    you</b>` is transformed to `<b>Hello you</b>`
-* Remove attribute quotes: `<div class="alert">` -> `<div class=alert>`
-* Normalize attributes spaces: `<input   required>` -> `<input required>`
-* Normalize class spaces: `<div class="  a   b">` -> `<div class="a b">`
-* Simplify boolean attributes: `<input required="oh-yeah!">` -> `<input required>`
-* Remove self-close slash: `<br />` -> `<br>`
+* Collapse text whitespace: `<b>Hello\n\t you</b>` is transformed to `<b>Hello\nyou</b>`
+* Remove attribute quotes: `<div class="alert">` → `<div class=alert>`
+* Normalize attributes spaces: `<input \n required>` → `<input required>`
+* Normalize class spaces: `<div class="  a   b">` → `<div class="a b">`
+* Simplify boolean attributes: `<input required="oh-yeah!">` → `<input required>`
+* Remove self-close slash: `<br />` → `<br>`
 
 ### Render-time error mapping
 Errors during render-time are mapped back to their original source location (that is, we keep an internal source map)
