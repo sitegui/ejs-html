@@ -72,6 +72,38 @@ var render = ejs.compile('<i>Hi</i> <p><i>Deep</i></p>', {
 render() // '<em>Hi</em> <p><em>Deep</em></p>'
 ```
 
+### Custom elements
+Unleash the semantic power of HTML with custom elements. To use custom element you must first define one:
+
+For example, define your own confirm dialog (in `dialog.ejs`):
+```
+<div class="dialog">
+	<div class="dialog-title">
+		<%= title %>
+		<% if (closable) { %>
+			<div class="dialog-close">X</div>
+		<% } %>
+	</div>
+	<!-- dialog content goes here -->
+	<eh-placeholder />
+	<div class="dialog-buttons">
+		<button class="dialog-yes">Yes</button>
+		<button class="dialog-no">No</button>
+	</div>
+</div>
+```
+
+And then use it, like:
+```
+<custom-dialog title="Wanna Know?" closable>
+	<em>HTML</em> Content
+</custom-dialog>
+```
+
+The attributes on the `custom-dialog` tag is passed as locals to `dialog.ejs` and its content is replaces the `<eh-placeholder />` tag.
+
+This is the most basic usage of this feature. For more (like passing JS values and multiple content areas), see [custom-tags.md](.)
+
 ## Missing features
 The following list of features are support other EJS implementations, but not by this one (at least, yet):
 
@@ -80,7 +112,7 @@ The following list of features are support other EJS implementations, but not by
 * No includes
 * No built-in express support
 
-## Syntax
+## API
 
 
 
