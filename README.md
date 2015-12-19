@@ -44,7 +44,7 @@ Errors during render-time are mapped back to their original source location (tha
 ### Boolean attributes
 Attributes like `disabled` and `checked` are recognized as boolean. So one may write `disabled=<%=disabled%>` instead of `<%if(disabled){%>disabled<%}%>`, as they must in plain EJS.
 
-This is one point that makes this not EJS compliant. In EJS, anything literal text is outputed as is. In the example above this is not happens: the text `disabled=` is not outputed if the local value `disabled` is falsy, since ejs-html knows this is a boolean attribute.
+This is one point that makes this not EJS compliant. In EJS, any literal text is outputed as is. In the example above this is not what happens: the text `disabled=` is not outputed if the local value `disabled` is falsy, since ejs-html knows this is a boolean attribute.
 
 ### Server-side compiled, client-side rendered
 Compile the template server-side and export a function to render it in the client-side.
@@ -73,10 +73,10 @@ render() // '<em>Hi</em> <p><em>Deep</em></p>'
 ```
 
 ### Custom elements
-Unleash the semantic power of HTML with custom elements. To use custom element you must first define one:
+Unleash the semantic power of HTML with custom elements. To use custom elements you must first define one:
 
 For example, define your own confirm dialog (in `dialog.ejs`):
-```
+```html
 <div class="dialog">
 	<div class="dialog-title">
 		<%= title %>
@@ -94,13 +94,15 @@ For example, define your own confirm dialog (in `dialog.ejs`):
 ```
 
 And then use it, like:
-```
+```html
 <custom-dialog title="Wanna Know?" closable>
 	<em>HTML</em> Content
 </custom-dialog>
 ```
 
-The attributes on the `custom-dialog` tag is passed as locals to `dialog.ejs` and its content is replaces the `<eh-placeholder />` tag.
+The attributes on the `custom-dialog` tag is passed as locals to `dialog.ejs` and its content replaces the `<eh-placeholder />` tag.
+
+Custom elements is a more powerful replacement for ejs' include feature.
 
 This is the most basic usage of this feature. For more (like passing JS values and multiple content areas), see [custom-tags.md](https://github.com/sitegui/ejs-html/blob/master/custom-tags.md)
 
@@ -109,12 +111,12 @@ The following list of features are support other EJS implementations, but not by
 
 * No support for custom delimiters
 * No caching
-* No includes
 * No built-in express support
+* No include: use custom elements instead
 
 ## API
 
-The main API is the `compile` function. Everything else is auxiliary and mostly not used.
+The main API is the `compile` function. Everything else is auxiliary.
 
 ### compile(source[, options])
 Compile the given EJS-HTML source into a render function. `options` is an optional object, with the following optional keys:
