@@ -1,3 +1,6 @@
+# 1.2.0
+* Added: support for custom elements
+
 # 1.1.0
 * Added: parse HTML as tree of elements
 * Added: check element tree is well balanced (no implicit end-tags)
