@@ -1,9 +1,6 @@
 'use strict'
 
 module.exports.compile = require('./lib/compile')
-module.exports.escape = require('./lib/escape')
-module.exports.parse = require('./lib/parse')
-module.exports.reduce = require('./lib/reduce')
 
 /**
  * @param {string} source
@@ -16,3 +13,8 @@ module.exports.reduce = require('./lib/reduce')
 module.exports.render = function (source, locals, options) {
 	return module.exports.compile(source, options)(locals)
 }
+
+// Utils
+module.exports.parse = require('./lib/parse')
+module.exports.reduce = require('./lib/reduce')
+module.exports.escape = require('./lib/escape')

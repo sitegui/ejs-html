@@ -1,7 +1,7 @@
 /*globals describe, it*/
 'use strict'
 
-let parse = require('../lib/parse')
+let parse = require('..').parse
 require('should')
 
 describe('parse', function () {

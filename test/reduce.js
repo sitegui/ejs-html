@@ -1,8 +1,8 @@
 /*globals describe, it*/
 'use strict'
 
-let parse = require('../lib/parse'),
-	reduce = require('../lib/reduce')
+let parse = require('..').parse,
+	reduce = require('..').reduce
 require('should')
 
 describe('reduce', function () {

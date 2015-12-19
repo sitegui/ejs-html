@@ -102,7 +102,7 @@ And then use it, like:
 
 The attributes on the `custom-dialog` tag is passed as locals to `dialog.ejs` and its content is replaces the `<eh-placeholder />` tag.
 
-This is the most basic usage of this feature. For more (like passing JS values and multiple content areas), see [custom-tags.md](.)
+This is the most basic usage of this feature. For more (like passing JS values and multiple content areas), see [custom-tags.md](https://github.com/sitegui/ejs-html/blob/master/custom-tags.md)
 
 ## Missing features
 The following list of features are support other EJS implementations, but not by this one (at least, yet):
@@ -114,5 +114,29 @@ The following list of features are support other EJS implementations, but not by
 
 ## API
 
+The main API is the `compile` function. Everything else is auxiliary and mostly not used.
 
+### compile(source[, options])
+Compile the given EJS-HTML source into a render function. `options` is an optional object, with the following optional keys:
 
+* `debug`: if `true`, the generated JS source code will be printed to the console
+* `filename`: used to name the file in render-time error's stack trace
+* `standAlone`: if `true`, return a function that can be exported somewhere else, for example, to compile in the server and render in the browser, use this. When `false` (default), the generated function will be optimized to run in the same VM it was compiled
+* `transformer`: a function that can transform the parsed HTML element tree, before the minification and compilation. This should return a new array of tokens or `undefined` to use the same (in case of in-place changes). Consult the definition of a `Token` in the [parse.js](https://github.com/sitegui/ejs-html/blob/master/lib/parse.js) file.
+
+This will return a compiled render function that can then be called like: `render(locals[, customRender])`. `locals` is the data object used to fill the template. `customRender` is an optional function used to render custom elements, see [custom-tags.md](https://github.com/sitegui/ejs-html/blob/master/custom-tags.md) for more info about it.
+
+### render(source[, locals[, options]])
+Just a convinience for `compile(source, options)(locals)`.
+
+### parse(source)
+Parse the given EJS-HTML source into a array of tokens. Use for low-level, crazy thinks (like some internal tooling).
+
+### reduce(tokens)
+Remove comments, transform fixed tokens back to text and apply HTML minification. Use for low-level, crazy things.
+
+### escape.html(str)
+Make HTML-safe
+
+### escape.js(str)
+Escape as to make safe to put inside double quotes: `x = "..."`

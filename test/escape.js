@@ -1,7 +1,7 @@
 /*globals describe, it*/
 'use strict'
 
-let escape = require('../lib/escape')
+let escape = require('..').escape
 require('should')
 
 describe('escape', function () {

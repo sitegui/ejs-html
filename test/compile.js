@@ -1,7 +1,7 @@
 /*globals describe, it*/
 'use strict'
 
-let compile = require('../lib/compile')
+let compile = require('..').compile
 require('should')
 
 describe('compile', function () {
