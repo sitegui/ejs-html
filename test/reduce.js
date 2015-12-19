@@ -50,14 +50,14 @@ describe('reduce', function () {
 	})
 
 	it('should parse open tags with dynamic attributes', function () {
-		let source = '<with-ejs attr="pre<%=code%>post"></with-ejs>'
+		let source = '<div attr="pre<%=code%>post"></div>'
 		reduce(parse(source)).should.be.eql([
-			'<with-ejs attr="pre', {
+			'<div attr="pre', {
 				type: 'ejs-escaped',
 				content: 'code',
-				start: getPos('<with-ejs attr="pre<%='),
-				end: getPos('<with-ejs attr="pre<%=code')
-			}, 'post"></with-ejs>'
+				start: getPos('<div attr="pre<%='),
+				end: getPos('<div attr="pre<%=code')
+			}, 'post"></div>'
 		])
 	})
 
