@@ -85,6 +85,14 @@ inside`)
 		check('<eh-placeholder>default</eh-placeholder>', '<my-tag></my-tag>', 'default')
 		check('<eh-placeholder>default</eh-placeholder>', '<my-tag> </my-tag>', ' ')
 	})
+
+	it('should not treat any boolean-like attribute as true', function () {
+		check('<%=bool%>', '<my-tag bool></my-tag>', 'true')
+	})
+
+	it('should turn dash notation to camel case', function () {
+		check('<%=userName%>', '<my-tag user-name=gui></my-tag>', 'gui')
+	})
 })
 
 function check(customSource, source, expected) {
