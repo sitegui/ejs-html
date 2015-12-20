@@ -14,8 +14,9 @@ describe('custom', function () {
 			<div class="dialog-close">X</div>
 		<% } %>
 	</div>
-	<!-- dialog content goes here -->
-	<eh-placeholder />
+	<eh-placeholder>
+		<!-- dialog content goes here -->
+	</eh-placeholder>
 	<div class="dialog-buttons">
 		<button class="dialog-yes">Yes</button>
 		<button class="dialog-no">No</button>
@@ -48,7 +49,6 @@ Wanna Know?
 </div>
 
 <em>HTML</em> Content
-
 <div class=dialog-buttons>
 <button class=dialog-yes>Yes</button>
 <button class=dialog-no>No</button>
@@ -57,15 +57,13 @@ Wanna Know?
 	})
 
 	it('should support multiple and named placeholders', function () {
-		let renderCustom = compile(`<eh-placeholder>
-<eh-placeholder name="a">
-<eh-placeholder>
-<eh-placeholder name="a">`)
-
-		compile(`<my-tag>
+		check(`<eh-placeholder></eh-placeholder>
+<eh-placeholder name="a"></eh-placeholder>
+<eh-placeholder></eh-placeholder>
+<eh-placeholder name="a"></eh-placeholder>`, `<my-tag>
 outside
 <eh-content name="a">inside</eh-content>
-</my-tag>`)({}, (_, locals) => renderCustom(locals)).should.be.equal(`
+</my-tag>`, `
 outside
 
 inside
@@ -82,4 +80,13 @@ inside`)
 			locals.ref.should.be.equal(myObj)
 		})
 	})
+
+	it('should use default placeholder when no content is provided', function () {
+		check('<eh-placeholder>default</eh-placeholder>', '<my-tag></my-tag>', 'default')
+		check('<eh-placeholder>default</eh-placeholder>', '<my-tag> </my-tag>', ' ')
+	})
 })
+
+function check(customSource, source, expected) {
+	compile(source)({}, (_, locals) => compile(customSource)(locals)).should.be.equal(expected)
+}

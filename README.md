@@ -84,8 +84,9 @@ For example, define your own confirm dialog (in `dialog.ejs`):
 			<div class="dialog-close">X</div>
 		<% } %>
 	</div>
-	<!-- dialog content goes here -->
-	<eh-placeholder />
+	<eh-placeholder>
+		<!-- dialog content goes here -->
+	</eh-placeholder>
 	<div class="dialog-buttons">
 		<button class="dialog-yes">Yes</button>
 		<button class="dialog-no">No</button>
@@ -100,7 +101,7 @@ And then use it, like:
 </custom-dialog>
 ```
 
-The attributes on the `custom-dialog` tag is passed as locals to `dialog.ejs` and its content replaces the `<eh-placeholder />` tag.
+The attributes on the `custom-dialog` tag is passed as locals to `dialog.ejs` and its content replaces the `<eh-placeholder></eh-placeholder>` tag.
 
 Custom elements is a more powerful replacement for ejs' include feature.
 
