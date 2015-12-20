@@ -1,3 +1,6 @@
+# 2.0.0
+* Changed: `<eh-placeholder>` is no longer a void element, its content indicates the default value if no content for it is provided
+
 # 1.2.0
 * Added: support for custom elements
 

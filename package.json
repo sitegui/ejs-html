@@ -1,6 +1,6 @@
 {
 	"name": "ejs-html",
-	"version": "1.2.0",
+	"version": "2.0.0",
 	"author": "Sitegui <sitegui@sitegui.com.br>",
 	"description": "Embedded JavaScript HTML templates. Another implementation of EJS, focused on run-time performance, HTML syntax checking and outputting minified HTML.",
 	"main": "./index.js",
@@ -21,6 +21,6 @@
 	"devDependencies": {
 		"jsdoc": "^3.4.0",
 		"mocha": "^2.3.4",
-		"should": "^8.0.1"
+		"should": "^8.0.2"
 	}
 }
