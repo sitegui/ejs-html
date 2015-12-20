@@ -1,3 +1,8 @@
+# 2.0.1
+* Fixed: detect and throw syntax error on repeated attributes
+* Fixed: boolean and case attributes handling in custom tags
+* Fixed: show line numbers in render-time errors and fix line mapping for custom tags
+
 # 2.0.0
 * Changed: `<eh-placeholder>` is no longer a void element, its content indicates the default value if no content for it is provided
 
