@@ -18,3 +18,4 @@ module.exports.render = function (source, locals, options) {
 module.exports.parse = require('./lib/parse')
 module.exports.reduce = require('./lib/reduce')
 module.exports.escape = require('./lib/escape')
+module.exports.getSnippet = require('./lib/getSnippet')
