@@ -143,3 +143,6 @@ Make HTML-safe
 
 ### escape.js(str)
 Escape as to make safe to put inside double quotes: `x = "..."`
+
+### escape.getSnippet(source, lineStart, lineEnd)
+Extract the code snippet in the given region (used internally to create error messages)

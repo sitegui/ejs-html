@@ -1,3 +1,6 @@
+# 2.1.0
+* Added: exposed `getSnippet()`
+
 # 2.0.1
 * Fixed: detect and throw syntax error on repeated attributes
 * Fixed: boolean and case attributes handling in custom tags
