@@ -2,7 +2,7 @@
 	"name": "ejs-html",
 	"version": "2.1.0",
 	"author": "Sitegui <sitegui@sitegui.com.br>",
-	"description": "Embedded JavaScript HTML templates. Another implementation of EJS, focused on run-time performance, HTML syntax checking and outputting minified HTML.",
+	"description": "Embedded JavaScript HTML templates. An implementation of EJS focused on run-time performance, HTML syntax checking, minified HTML output and custom HTML elements.",
 	"main": "./index.js",
 	"repository": {
 		"type": "git",

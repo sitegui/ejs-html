@@ -3,7 +3,7 @@
 [![Inline docs](https://inch-ci.org/github/sitegui/ejs-html.svg?branch=master)](https://inch-ci.org/github/sitegui/ejs-html)
 [![Dependency Status](https://david-dm.org/sitegui/ejs-html.svg)](https://david-dm.org/sitegui/ejs-html)
 
-Embedded JavaScript HTML templates. Another implementation of EJS, focused on run-time performance, HTML syntax checking and outputting minified HTML.
+Embedded JavaScript HTML templates. An implementation of EJS focused on run-time performance, HTML syntax checking, minified HTML output and custom HTML elements.
 
 ## Usage
 `npm install ejs-html --save`
@@ -34,7 +34,7 @@ The template source is parsed and minified on compile time, so there is no impac
 * Collapse text whitespace: `<b>Hello\n\t you</b>` is transformed to `<b>Hello\nyou</b>`
 * Remove attribute quotes: `<div class="alert">` → `<div class=alert>`
 * Normalize attributes spaces: `<input \n required>` → `<input required>`
-* Normalize class spaces: `<div class="  a   b">` → `<div class="a b">`
+* Normalize class spaces: `<div class="  a   b ">` → `<div class="a b">`
 * Simplify boolean attributes: `<input required="oh-yeah!">` → `<input required>`
 * Remove self-close slash: `<br />` → `<br>`
 
@@ -54,7 +54,7 @@ Transformers may be registered to change the parsed elements tree and implement 
 
 For example:
 ```js
-// change I tags for EM
+// change I elements for EM
 
 var render = ejs.compile('<i>Hi</i> <p><i>Deep</i></p>', {
 	transformer: function translate(tokens) {
@@ -105,7 +105,7 @@ The attributes on the `custom-dialog` tag is passed as locals to `dialog.ejs` an
 
 Custom elements is a more powerful replacement for ejs' include feature.
 
-This is the most basic usage of this feature. For more (like passing JS values and multiple content areas), see [custom-tags.md](https://github.com/sitegui/ejs-html/blob/master/custom-tags.md)
+This is the most basic usage of this feature. For more (like passing JS values and multiple content areas), see [custom-els.md](https://github.com/sitegui/ejs-html/blob/master/custom-els.md)
 
 ## Missing features
 The following list of features are support other EJS implementations, but not by this one (at least, yet):
@@ -127,7 +127,7 @@ Compile the given EJS-HTML source into a render function. `options` is an option
 * `standAlone`: if `true`, return a function that can be exported somewhere else, for example, to compile in the server and render in the browser, use this. When `false` (default), the generated function will be optimized to run in the same VM it was compiled
 * `transformer`: a function that can transform the parsed HTML element tree, before the minification and compilation. This should return a new array of tokens or `undefined` to use the same (in case of in-place changes). Consult the definition of a `Token` in the [parse.js](https://github.com/sitegui/ejs-html/blob/master/lib/parse.js) file.
 
-This will return a compiled render function that can then be called like: `render(locals[, customRender])`. `locals` is the data object used to fill the template. `customRender` is an optional function used to render custom elements, see [custom-tags.md](https://github.com/sitegui/ejs-html/blob/master/custom-tags.md) for more info about it.
+This will return a compiled render function that can then be called like: `render(locals[, customRender])`. `locals` is the data object used to fill the template. `customRender` is an optional function used to render custom elements, see [custom-els.md](https://github.com/sitegui/ejs-html/blob/master/custom-els.md) for more info about it.
 
 ### render(source[, locals[, options]])
 Just a convinience for `compile(source, options)(locals)`.
@@ -139,10 +139,10 @@ Parse the given EJS-HTML source into a array of tokens. Use for low-level, crazy
 Remove comments, transform fixed tokens back to text and apply HTML minification. Use for low-level, crazy things.
 
 ### escape.html(str)
-Make HTML-safe
+Return a HTML-safe version of `str`, escaping &, <, >, " and '
 
 ### escape.js(str)
-Escape as to make safe to put inside double quotes: `x = "..."`
+Escape as to make safe to put inside double quotes: `x = "..."`, escaping \, \n, \r and "
 
 ### escape.getSnippet(source, lineStart, lineEnd)
 Extract the code snippet in the given region (used internally to create error messages)

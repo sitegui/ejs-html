@@ -9,6 +9,7 @@ module.exports.compile = require('./lib/compile')
  * @param {boolean} [options.debug=false]
  * @param {string} [options.filename='ejs']
  * @param {boolean} [options.standAlone=false]
+ * @returns {string}
  */
 module.exports.render = function (source, locals, options) {
 	return module.exports.compile(source, options)(locals)
