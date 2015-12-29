@@ -1,3 +1,8 @@
+# 3.0.0
+
+## Breaking Changes
+* EJS eval tags `<% %>` are no longer allowed in attribute values, for safety and simplicity, use escaped tags `<%= %>`
+
 # 2.1.0
 * Added: exposed `getSnippet()`
 
