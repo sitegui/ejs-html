@@ -12,8 +12,8 @@ Embedded JavaScript HTML templates. An implementation of EJS focused on run-time
 let ejs = require('ejs-html')
 
 let html = ejs.render('<input type="text" disabled="<%=disabled%>" value="<%=value%>" />', {
-	disabled: false,
-	value: 'hi you'
+    disabled: false,
+    value: 'hi you'
 })
 
 // html = '<input type=text value="hi you">'
@@ -57,16 +57,16 @@ For example:
 // change I elements for EM
 
 var render = ejs.compile('<i>Hi</i> <p><i>Deep</i></p>', {
-	transformer: function translate(tokens) {
-		tokens.forEach(token => {
-			if (token.type === 'element') {
-				if (token.name === 'i') {
-					token.name = 'em'
-				}
-				translate(token.children)
-			}
-		})
-	}
+    transformer: function translate(tokens) {
+        tokens.forEach(token => {
+            if (token.type === 'element') {
+                if (token.name === 'i') {
+                    token.name = 'em'
+                }
+                translate(token.children)
+            }
+        })
+    }
 })
 
 render() // '<em>Hi</em> <p><em>Deep</em></p>'
@@ -78,26 +78,26 @@ Unleash the semantic power of HTML with custom elements. To use custom elements 
 For example, define your own confirm dialog (in `dialog.ejs`):
 ```html
 <div class="dialog">
-	<div class="dialog-title">
-		<%= title %>
-		<% if (closable) { %>
-			<div class="dialog-close">X</div>
-		<% } %>
-	</div>
-	<eh-placeholder>
-		<!-- dialog content goes here -->
-	</eh-placeholder>
-	<div class="dialog-buttons">
-		<button class="dialog-yes">Yes</button>
-		<button class="dialog-no">No</button>
-	</div>
+    <div class="dialog-title">
+        <%= title %>
+        <% if (closable) { %>
+            <div class="dialog-close">X</div>
+        <% } %>
+    </div>
+    <eh-placeholder>
+        <!-- dialog content goes here -->
+    </eh-placeholder>
+    <div class="dialog-buttons">
+        <button class="dialog-yes">Yes</button>
+        <button class="dialog-no">No</button>
+    </div>
 </div>
 ```
 
 And then use it, like:
 ```html
 <custom-dialog title="Wanna Know?" closable>
-	<em>HTML</em> Content
+    <em>HTML</em> Content
 </custom-dialog>
 ```
 

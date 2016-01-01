@@ -1,3 +1,6 @@
+# 3.0.1
+* Fixed: npm.js does not render tabs on README correctly
+
 # 3.0.0
 
 ## Breaking Changes
