@@ -15,9 +15,12 @@ describe('compile', function () {
 	})
 
 	it('should compile to run in the client', function () {
-		compile('Hi <b><%=name.first%></b> <%=name.last%>!', {
-			standAlone: true
-		})({
+		let code = compile.standAlone('Hi <b><%=name.first%></b> <%=name.last%>!')
+
+		/*jshint evil:true*/
+		let render = new Function('locals, customRender', code)
+
+		render({
 			name: {
 				first: 'Gui',
 				last: 'S'
