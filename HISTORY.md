@@ -1,7 +1,9 @@
 # 3.0.0
 
 ## Breaking Changes
-* EJS eval tags `<% %>` are no longer allowed in attribute values, for safety and simplicity, use escaped tags `<%= %>`
+* Changed: EJS eval tags `<% %>` are no longer allowed in attribute values, for safety and simplicity, use escaped tags `<%= %>`
+* Removed: `standAlone` option to `compile()`. Use new function `compile.standAlone()` for similar effect
+* Added: `compile.standAlone()`. It returns the JS render function body as a string. The string can be trasmitted to a client and then the render function reconstructed with `new Function('locals, customRender', code)`
 
 # 2.1.0
 * Added: exposed `getSnippet()`
