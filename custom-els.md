@@ -3,7 +3,7 @@
 ## Introduction
 Custom HTML elements is a greater replacement for `include`. It delegates a portion of the rendering to another EJS template.
 
-The basic example bellow defines a custom text input element, that has is put inside an label element and has a text title in front of it:
+The basic example bellow defines a custom text input element, that has its input inside an label element and has a text title in front of it:
 ```html
 <label>
 	<span class="field-title"><%= title %></span>: <input name="<%=name%>">
@@ -23,7 +23,7 @@ The final rendering result is shown bellow:
 ```
 
 ## Concepts
-As of this writting, the W3C is currently working in custom elements for the Web, under the [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) umbrella. But we are *not* talking about it here, this is a completly different beast (inspired by the rising standard, but yet not the same thing). EJS-HTML custom elements are resolved at render time, before the browser get to the HTML.
+As of this writting, the W3C is currently working in custom elements for the Web, under the [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) umbrella. But we are *not* talking about that here, this is a completely different beast (inspired by the rising standard, but yet not the same thing). EJS-HTML custom elements are resolved at render time, before the browser get to the HTML.
 
 Any element that have a dash (`-`) on its name will be treated as custom (this follows the W3C standard). At compile time, they will be identified and compiled to a `customRender` call. At rendering time, the `customRender` will be called in order to render the custom element and return the HTML result. So it works conceptually like a super-powered include, because it accepts dynamic attributes and complex HTML content.
 
@@ -75,7 +75,7 @@ Example:
 <p><b>B</b>ody</p>
 ```
 
-Note that a empty-named content markup (`<eh-content name="">`) is implied for any content not inside a `eh-content` tag. In the example above, `<b>B</b>ody` is treated as if it was written as `<eh-content name=""><b>B</b>ody</eh-content>`
+Note that an empty-named content markup (`<eh-content name="">`) is implied for any content not inside a `eh-content` tag. In the example above, `<b>B</b>ody` is treated as if it was written as `<eh-content name=""><b>B</b>ody</eh-content>`
 
 ## Default Placeholder Content
 A `eh-placeholder` element will be replaced by the content provided for it. If no content is given, you can provide a fallback.
@@ -109,10 +109,10 @@ One practical application of this feature is to allow both simple and complex co
 Note how the default content for the title is a read from the `title` attribute, but if a HTML content for it is provided, it's used instead.
 
 ## Divergence From W3C's Web Components
-In the current spec, the W3C declares a `<content>` tag to act as ejs-html's `<eh-placeholder>`. This lib does not follow the spec because (a) its mechanism based on CSS selectors to solve multiple content areas is too complex (b) its usage is hard to optimize on compile time (c) there is no support for default content.
+In the current spec, the W3C declares a `<content>` tag to act as ejs-html's `<eh-placeholder>`. The spec is not followed by this lib because (a) its mechanism based on CSS selectors to solve multiple content areas is too complex (b) its usage is hard to optimize on compile time (c) there is no support for default content.
 
 ## The CustomRender Callback
-Currently, this lib does not attempt to detect witch EJS template to use to render a given custom element. You must implement that yourself and provide when rendering each template. For example, if your custom element definitions are in a folder, you are responsible to handle the routing.
+Currently, this lib does not attempt to detect which EJS template to use to render a given custom element. You must implement that yourself and provide when rendering each template. For example, if your custom element definitions are in a folder, you are responsible to handle the routing.
 
 A full example bellow, for the given folder structure:
 ```
