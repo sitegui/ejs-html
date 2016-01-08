@@ -1,3 +1,6 @@
+# 3.1.0
+* Added: `compile.both(source[, option])`
+
 # 3.0.1
 * Fixed: npm.js does not render tabs on README correctly
 

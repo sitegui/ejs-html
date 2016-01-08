@@ -42,4 +42,18 @@ describe('compile', function () {
 			}
 		})().should.be.equal('<em>Hi</em> <p><em>Deep</em></p>')
 	})
+
+	it('should compile to run in the server and client at once', function () {
+		let both = compile.both('<b><%= text %></b>'),
+			/*jshint evil:true*/
+			clientRender = new Function('locals, customRender', both.code)
+
+		both.render({
+			text: '<I>'
+		}).should.be.equal('<b>&lt;I&gt;</b>')
+
+		clientRender({
+			text: '<I>'
+		}).should.be.equal('<b>&lt;I&gt;</b>')
+	})
 })
