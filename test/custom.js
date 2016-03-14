@@ -83,7 +83,9 @@ inside`)
 
 	it('should use default placeholder when no content is provided', function () {
 		check('<eh-placeholder>default</eh-placeholder>', '<my-tag></my-tag>', 'default')
-		check('<eh-placeholder>default</eh-placeholder>', '<my-tag> </my-tag>', ' ')
+		check('<eh-placeholder>default</eh-placeholder>', '<my-tag>\n</my-tag>', 'default')
+		check('<eh-placeholder>default</eh-placeholder>', '<my-tag> </my-tag>', 'default')
+		check('<eh-placeholder>default</eh-placeholder>', '<my-tag>x</my-tag>', 'x')
 	})
 
 	it('should not treat any boolean-like attribute as true', function () {
