@@ -122,7 +122,7 @@ The main API is the `compile` function. Everything else is auxiliary.
 ### compile(source[, options])
 Compile the given EJS-HTML source into a render function. `options` is an optional object, with the following optional keys:
 
-* `debug`: if `true`, the generated JS source code will be printed to the console
+* `compileDebug`: if `false`, no extended context will be added to exceptions thrown at runtime (defaults to `true`). If `true`, the compiled code will be larger and will include the original EJS source
 * `filename`: used to name the file in render-time error's stack trace
 * `transformer`: a function that can transform the parsed HTML element tree, before the minification and compilation. This should return a new array of tokens or `undefined` to use the same (in case of in-place changes). Consult the definition of a `Token` in the [parse.js](https://github.com/sitegui/ejs-html/blob/master/lib/parse.js) file.
 

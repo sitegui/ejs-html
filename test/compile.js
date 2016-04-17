@@ -42,4 +42,43 @@ describe('compile', function () {
 			}
 		})().should.be.equal('<em>Hi</em> <p><em>Deep</em></p>')
 	})
+
+	it('should add extended exception context', function () {
+		let source = 'a\n<% throw new Error("hi") %>\nb',
+			options = {
+				filename: 'file.ejs'
+			},
+			message = `file.ejs:2
+ 1    | a
+ 2 >> | <% throw new Error("hi") %>
+ 3    | b
+
+hi`
+
+		// Non-stand alone compilation
+		compile(source, options).should.throw(message)
+
+		// Stand alone compilation
+		/*jshint evil:true*/
+		let code = compile.standAlone(source, options)
+		let render = new Function('locals, customRender', code)
+		render.should.throw(message)
+	})
+
+	it('should not add extended exception context when compileDebug is false', function () {
+		let source = 'a\n<% throw new Error("hi") %>\nb',
+			options = {
+				filename: 'file.ejs',
+				compileDebug: false
+			}
+
+		// Non-stand alone compilation
+		compile(source, options).should.throw('hi')
+
+		// Stand alone compilation
+		/*jshint evil:true*/
+		let code = compile.standAlone(source, options)
+		let render = new Function('locals, customRender', code)
+		render.should.throw('hi')
+	})
 })

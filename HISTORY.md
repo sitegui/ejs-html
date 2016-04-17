@@ -4,6 +4,9 @@
 * Removed: `compile.both()`, since it was not as useful as it has appeared at first and it would make the other improvents in this release harder to implement.
 * Removed: compile `debug` option, since it was not useful to be present in the public API
 
+## Other changes
+* Added: compile option `compileDebug` (defaults to `true`) to indicate whether to add extended context to exceptions
+
 # 3.1.1
 * Fixed: white-space-only content for custom element is considered empty and the default placeholder is used
 
