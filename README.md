@@ -140,12 +140,6 @@ var render = new Function('locals, customRender', functionBody)
 render({name: 'you'}) // <p>Hi you</p>
 ```
 
-### compile.both(source[, options])
-Runs both `compile(source, options)` and `compile.both(source, options)` at the same time to avoid parsing the source twice. Returns an object with two keys:
-
-* `render`: a function to run in the same VM, like `compile()`
-* `code`: a string, like `compile.standAlone()`
-
 ### render(source[, locals[, options]])
 Just a convinience for `compile(source, options)(locals)`.
 
