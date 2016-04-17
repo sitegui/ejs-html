@@ -2,6 +2,7 @@
 
 ## Breaking Changes
 * Removed: `compile.both()`, since it was not as useful as it has appeared at first and it would make the other improvents in this release harder to implement.
+* Removed: compile `debug` option, since it was not useful to be present in the public API
 
 # 3.1.1
 * Fixed: white-space-only content for custom element is considered empty and the default placeholder is used
