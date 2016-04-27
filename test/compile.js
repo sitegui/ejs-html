@@ -81,4 +81,12 @@ hi`
 		let render = new Function('locals, customRender', code)
 		render.should.throw('hi')
 	})
+
+	it('should compile custom tags when compileDebug is false', function () {
+		compile('<my-tag></my-tag>', {
+			compileDebug: false
+		})({}, function () {
+			return 'hi'
+		}).should.be.equal('hi')
+	})
 })

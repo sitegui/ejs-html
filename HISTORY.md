@@ -1,4 +1,7 @@
-# next
+# 4.0.1
+* Fixed: compiling custom elements with `compileDebug` set to `false` would crash on runtime
+
+# 4.0.0
 
 ## Breaking Changes
 * Removed: `compile.both()`, since it was not as useful as it has appeared at first and it would make the other improvents in this release harder to implement.

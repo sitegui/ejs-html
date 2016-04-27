@@ -146,7 +146,7 @@ Just a convinience for `compile(source, options)(locals)`.
 ### parse(source)
 Parse the given EJS-HTML source into a array of tokens. Use for low-level, crazy thinks (like some internal tooling).
 
-### reduce(tokens)
+### reduce(tokens[, compileDebug])
 Remove comments, transform fixed tokens back to text and apply HTML minification. Use for low-level, crazy things.
 
 ### escape.html(str)
