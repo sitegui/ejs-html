@@ -1,3 +1,6 @@
+# 4.0.2
+* Fixed: compiling custom elements inside custom elements with `compileDebug` set to `false` would crash on runtime. The fix on 4.0.1 did not covered the recursive case.
+
 # 4.0.1
 * Fixed: compiling custom elements with `compileDebug` set to `false` would crash on runtime
 

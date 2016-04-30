@@ -83,7 +83,7 @@ hi`
 	})
 
 	it('should compile custom tags when compileDebug is false', function () {
-		compile('<my-tag></my-tag>', {
+		compile('<my-tag><my-tag2></my-tag2></my-tag>', {
 			compileDebug: false
 		})({}, function () {
 			return 'hi'
