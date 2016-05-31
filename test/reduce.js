@@ -91,6 +91,12 @@ describe('reduce', function () {
 		minify('  x  <pre>  x  <b>  x  </b>  </pre>  x  ')
 			.should.be.equal(' x <pre>  x  <b>  x  </b>  </pre> x ')
 	})
+
+	it('should treat spaces around EJS tags correctly', function () {
+		minify('before  <%= 2 %>  after').should.be.equal('before <%= 2 %> after')
+		minify('before  <%- 2 %>  after').should.be.equal('before <%- 2 %> after')
+		minify('before  <% 2 %>  after').should.be.equal('before <% 2 %>after')
+	})
 })
 
 function getPos(str) {
