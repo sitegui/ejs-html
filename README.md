@@ -126,7 +126,7 @@ Compile the given EJS-HTML source into a render function. `options` is an option
 * `filename`: used to name the file in render-time error's stack trace
 * `transformer`: a function that can transform the parsed HTML element tree, before the minification and compilation. This should return a new array of tokens or `undefined` to use the same (in case of in-place changes). Consult the definition of a `Token` in the [parse.js](https://github.com/sitegui/ejs-html/blob/master/lib/parse.js) file.
 
-This will return a compiled render function that can then be called like: `render(locals[, customRender])`. `locals` is the data object used to fill the template. `customRender` is an optional function used to render custom elements, see [custom-els.md](https://github.com/sitegui/ejs-html/blob/master/custom-els.md) for more info about it.
+This will return a compiled render function that can then be called like: `render(locals[, renderCustom])`. `locals` is the data object used to fill the template. `renderCustom` is an optional function used to render custom elements, see [custom-els.md](https://github.com/sitegui/ejs-html/blob/master/custom-els.md) for more info about it.
 
 ### compile.standAlone(source[, options])
 Like `compile()`, but returns the function body code as a string, so that it can be exported somewhere else. A use case for this is compile the EJS template in the server, export the function to the client and render in the browser:
@@ -136,7 +136,7 @@ Like `compile()`, but returns the function body code as a string, so that it can
 let functionBody = ejs.compile.standAlone('<p>Hi <%=name%></p>')
 
 // On the client
-var render = new Function('locals, customRender', functionBody)
+var render = new Function('locals, renderCustom', functionBody)
 render({name: 'you'}) // <p>Hi you</p>
 ```
 

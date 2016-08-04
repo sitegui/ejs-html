@@ -18,7 +18,7 @@ describe('compile', function () {
 		let code = compile.standAlone('Hi <b><%=name.first%></b> <%=name.last%>!')
 
 		/*jshint evil:true*/
-		let render = new Function('locals, customRender', code)
+		let render = new Function('locals, renderCustom', code)
 
 		render({
 			name: {
@@ -61,7 +61,7 @@ hi`
 		// Stand alone compilation
 		/*jshint evil:true*/
 		let code = compile.standAlone(source, options)
-		let render = new Function('locals, customRender', code)
+		let render = new Function('locals, renderCustom', code)
 		render.should.throw(message)
 	})
 
@@ -78,7 +78,7 @@ hi`
 		// Stand alone compilation
 		/*jshint evil:true*/
 		let code = compile.standAlone(source, options)
-		let render = new Function('locals, customRender', code)
+		let render = new Function('locals, renderCustom', code)
 		render.should.throw('hi')
 	})
 

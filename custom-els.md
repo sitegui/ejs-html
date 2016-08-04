@@ -25,7 +25,7 @@ The final rendering result is shown bellow:
 ## Concepts
 As of this writting, the W3C is currently working in custom elements for the Web, under the [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) umbrella. But we are *not* talking about that here, this is a completely different beast (inspired by the rising standard, but yet not the same thing). EJS-HTML custom elements are resolved at render time, before the browser get to the HTML.
 
-Any element that have a dash (`-`) on its name will be treated as custom (this follows the W3C standard). At compile time, they will be identified and compiled to a `customRender` call. At rendering time, the `customRender` will be called in order to render the custom element and return the HTML result. So it works conceptually like a super-powered include, because it accepts dynamic attributes and complex HTML content.
+Any element that have a dash (`-`) on its name will be treated as custom (this follows the W3C standard). At compile time, they will be identified and compiled to a `renderCustom` call. At rendering time, the `renderCustom` will be called in order to render the custom element and return the HTML result. So it works conceptually like a super-powered include, because it accepts dynamic attributes and complex HTML content.
 
 ## Attributes
 Attributes in the custom element's open tag will be passed as the `locals` for it.
@@ -152,10 +152,10 @@ function compile(path) {
 	return cache.get(path)
 }
 
-compile('views/home.ejs')({}, function customRender(name, locals) {
+compile('views/home.ejs')({}, function renderCustom(name, locals) {
 	// We are responsible to translate the element name (like 'my-header') to file path
-	// Note that `customRender` is passed as argument again, enabling custom elements to
+	// Note that `renderCustom` is passed as argument again, enabling custom elements to
 	// also use others
-	return compile('elements/' + name + '.ejs')(locals, customRender)
+	return compile('elements/' + name + '.ejs')(locals, renderCustom)
 })
 ```
