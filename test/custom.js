@@ -49,6 +49,7 @@ Wanna Know?
 </div>
 
 <em>HTML</em> Content
+
 <div class=dialog-buttons>
 <button class=dialog-yes>Yes</button>
 <button class=dialog-no>No</button>
@@ -67,6 +68,7 @@ outside
 outside
 
 inside
+
 outside
 
 inside`)
