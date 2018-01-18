@@ -6,7 +6,9 @@ require('should')
 
 describe('compile', () => {
 	it('should compile to run in the server', () => {
-		compile('Hi <b><%=name.first%></b> <%=name.last%>!')({
+		compile('Hi <b><%=name.first%></b> <%=name.last%>!', {
+			vars: ['name']
+		})({
 			name: {
 				first: 'Gui',
 				last: 'S'
@@ -15,7 +17,9 @@ describe('compile', () => {
 	})
 
 	it('should compile to run in the client', () => {
-		let code = compile.standAlone('Hi <b><%=name.first%></b> <%=name.last%>!')
+		let code = compile.standAlone('Hi <b><%=name.first%></b> <%=name.last%>!', {
+			vars: ['name']
+		})
 
 		// eslint-disable-next-line no-new-func
 		let render = new Function('locals, renderCustom', code)

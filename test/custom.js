@@ -21,7 +21,9 @@ describe('custom', () => {
 		<button class="dialog-yes">Yes</button>
 		<button class="dialog-no">No</button>
 	</div>
-</div>`)
+</div>`, {
+			vars: ['title', 'closable']
+		})
 	})
 
 	let renderView
@@ -76,7 +78,9 @@ inside`)
 
 	it('should allow passing complex JS values', () => {
 		let myObj = {}
-		compile('<my-tag ref="<%=someObj%>"></my-tag>')({
+		compile('<my-tag ref="<%=someObj%>"></my-tag>', {
+			vars: ['someObj']
+		})({
 			someObj: myObj
 		}, (_, locals) => {
 			locals.ref.should.be.equal(myObj)
@@ -91,11 +95,11 @@ inside`)
 	})
 
 	it('should not treat any boolean-like attribute as true', () => {
-		check('<%=bool%>', '<my-tag bool></my-tag>', 'true')
+		check('<%=locals.bool%>', '<my-tag bool></my-tag>', 'true')
 	})
 
 	it('should turn dash notation to camel case', () => {
-		check('<%=userName%>', '<my-tag user-name=gui></my-tag>', 'gui')
+		check('<%=locals.userName%>', '<my-tag user-name=gui></my-tag>', 'gui')
 	})
 })
 

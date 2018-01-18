@@ -5,10 +5,7 @@ module.exports.compile = require('./lib/compile')
 /**
  * @param {string} source
  * @param {Object} [locals={}]
- * @param {Object} [options]
- * @param {boolean} [options.debug=false]
- * @param {string} [options.filename='ejs']
- * @param {boolean} [options.standAlone=false]
+ * @param {Object} [options] - see {@link prepareOptions}
  * @returns {string}
  */
 module.exports.render = function (source, locals, options) {
@@ -20,3 +17,5 @@ module.exports.parse = require('./lib/parse')
 module.exports.reduce = require('./lib/reduce')
 module.exports.escape = require('./lib/escape')
 module.exports.getSnippet = require('./lib/getSnippet')
+
+module.exports._prepareOptions = require('./lib/prepareOptions')
