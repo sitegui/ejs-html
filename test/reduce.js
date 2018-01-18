@@ -1,18 +1,18 @@
-/*globals describe, it*/
+/* globals describe, it*/
 'use strict'
 
 let parse = require('..').parse,
 	reduce = require('..').reduce
 require('should')
 
-describe('reduce', function () {
-	it('should reduce literal text to a simple string', function () {
+describe('reduce', () => {
+	it('should reduce literal text to a simple string', () => {
 		reduce(parse('A literal text')).should.be.eql(['A literal text'])
 
 		reduce(parse('Multi\nline')).should.be.eql(['Multi\nline'])
 	})
 
-	it('should parse EJS tags', function () {
+	it('should parse EJS tags', () => {
 		reduce(parse('<%eval%><%=escaped%><%-raw%>literal <%% text')).should.be.eql([{
 			type: 'ejs-eval',
 			start: getPos('<%'),
@@ -31,25 +31,25 @@ describe('reduce', function () {
 		}, 'literal <%% text'])
 	})
 
-	it('should remove comment tags', function () {
+	it('should remove comment tags', () => {
 		reduce(parse('<!--\n-- comment\n-->')).should.be.eql([])
 	})
 
-	it('should parse doctype tags', function () {
+	it('should parse doctype tags', () => {
 		reduce(parse('<!DOCTYPE html>')).should.be.eql(['<!DOCTYPE html>'])
 	})
 
-	it('should parse basic element tags', function () {
+	it('should parse basic element tags', () => {
 		reduce(parse('<div><input><input/></div >')).should.be.eql(['<div><input><input></div>'])
 	})
 
-	it('should parse open tags with literal attributes', function () {
+	it('should parse open tags with literal attributes', () => {
 		let source = '<div a="no-quote" \n b=\'s<i>ngle\' c="d<o>uble" d="" checked="yes!"></div>',
 			expected = '<div a=no-quote b=\'s<i>ngle\' c="d<o>uble" d checked></div>'
 		reduce(parse(source)).should.be.eql([expected])
 	})
 
-	it('should parse open tags with dynamic attributes', function () {
+	it('should parse open tags with dynamic attributes', () => {
 		let source = '<div attr="pre<%=code%>post"></div>'
 		reduce(parse(source)).should.be.eql([
 			'<div attr="pre', {
@@ -61,25 +61,25 @@ describe('reduce', function () {
 		])
 	})
 
-	it('should normalize whitespace between attributes', function () {
+	it('should normalize whitespace between attributes', () => {
 		minify('<a    b\n\t  \tc></a>').should.be.equal('<a b c></a>')
 	})
 
-	it('should collapse whitespaces in html text', function () {
+	it('should collapse whitespaces in html text', () => {
 		minify('   no\n   need    for   spaces   ').should.be.equal(' no\nneed for spaces ')
 
 		minify('even <%a%> between <%x%> js ta<%g%>s')
 			.should.be.equal('even <%a%>between <%x%>js ta<%g%>s')
 	})
 
-	it('should collapse whitespace in class attribute', function () {
+	it('should collapse whitespace in class attribute', () => {
 		minify('<a class="a   b \n\t c  "></a>').should.be.equal('<a class="a b c"></a>')
 
 		minify('<a class="a <%%>  b<%%>d \n<%%>\t c  "></a>')
 			.should.be.equal('<a class="a <%%> b<%%>d <%%> c"></a>')
 	})
 
-	it('should collapse boolean attributes', function () {
+	it('should collapse boolean attributes', () => {
 		minify('<a a="" checked=checked multiple></a>')
 			.should.be.equal('<a a checked multiple></a>')
 
@@ -87,12 +87,12 @@ describe('reduce', function () {
 			.should.be.equal('<a<%if (checked) {%> checked<%}%>></a>')
 	})
 
-	it('should keep whitespace inside <pre>-like tags', function () {
+	it('should keep whitespace inside <pre>-like tags', () => {
 		minify('  x  <pre>  x  <b>  x  </b>  </pre>  x  ')
 			.should.be.equal(' x <pre>  x  <b>  x  </b>  </pre> x ')
 	})
 
-	it('should treat spaces around EJS tags correctly', function () {
+	it('should treat spaces around EJS tags correctly', () => {
 		minify('before  <%= 2 %>  after').should.be.equal('before <%= 2 %> after')
 		minify('before  <%- 2 %>  after').should.be.equal('before <%- 2 %> after')
 		minify('before  <% 2 %>  after').should.be.equal('before <% 2 %>after')

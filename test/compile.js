@@ -1,11 +1,11 @@
-/*globals describe, it*/
+/* globals describe, it*/
 'use strict'
 
 let compile = require('..').compile
 require('should')
 
-describe('compile', function () {
-	it('should compile to run in the server', function () {
+describe('compile', () => {
+	it('should compile to run in the server', () => {
 		compile('Hi <b><%=name.first%></b> <%=name.last%>!')({
 			name: {
 				first: 'Gui',
@@ -14,10 +14,10 @@ describe('compile', function () {
 		}).should.be.equal('Hi <b>Gui</b> S!')
 	})
 
-	it('should compile to run in the client', function () {
+	it('should compile to run in the client', () => {
 		let code = compile.standAlone('Hi <b><%=name.first%></b> <%=name.last%>!')
 
-		/*jshint evil:true*/
+		// eslint-disable-next-line no-new-func
 		let render = new Function('locals, renderCustom', code)
 
 		render({
@@ -28,22 +28,22 @@ describe('compile', function () {
 		}).should.be.equal('Hi <b>Gui</b> S!')
 	})
 
-	it('should support transformers', function () {
+	it('should support transformers', () => {
 		compile('<i>Hi</i> <p><i>Deep</i></p>', {
-			transformer: function translate(tokens) {
+			transformer: function transformer(tokens) {
 				tokens.forEach(token => {
 					if (token.type === 'element') {
 						if (token.name === 'i') {
 							token.name = 'em'
 						}
-						translate(token.children)
+						transformer(token.children)
 					}
 				})
 			}
 		})().should.be.equal('<em>Hi</em> <p><em>Deep</em></p>')
 	})
 
-	it('should add extended exception context', function () {
+	it('should add extended exception context', () => {
 		let source = 'a\n<% throw new Error("hi") %>\nb',
 			options = {
 				filename: 'file.ejs'
@@ -59,13 +59,13 @@ hi`
 		compile(source, options).should.throw(message)
 
 		// Stand alone compilation
-		/*jshint evil:true*/
 		let code = compile.standAlone(source, options)
+		// eslint-disable-next-line no-new-func
 		let render = new Function('locals, renderCustom', code)
 		render.should.throw(message)
 	})
 
-	it('should not add extended exception context when compileDebug is false', function () {
+	it('should not add extended exception context when compileDebug is false', () => {
 		let source = 'a\n<% throw new Error("hi") %>\nb',
 			options = {
 				filename: 'file.ejs',
@@ -76,17 +76,15 @@ hi`
 		compile(source, options).should.throw('hi')
 
 		// Stand alone compilation
-		/*jshint evil:true*/
 		let code = compile.standAlone(source, options)
+		// eslint-disable-next-line no-new-func
 		let render = new Function('locals, renderCustom', code)
 		render.should.throw('hi')
 	})
 
-	it('should compile custom tags when compileDebug is false', function () {
+	it('should compile custom tags when compileDebug is false', () => {
 		compile('<my-tag><my-tag2></my-tag2></my-tag>', {
 			compileDebug: false
-		})({}, function () {
-			return 'hi'
-		}).should.be.equal('hi')
+		})({}, () => 'hi').should.be.equal('hi')
 	})
 })

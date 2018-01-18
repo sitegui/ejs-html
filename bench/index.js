@@ -29,18 +29,14 @@ let source = `<!DOCTYPE html>
 
 source = source + source + source + source + source
 
-let renderEjs = time('compile-ejs', function () {
-	return ejs.compile(source)
-})
+let renderEjs = time('compile-ejs', () => ejs.compile(source))
 
-let renderEjsHtml = time('compile-ejs-html', function () {
-	return ejsHtml.compile(source, {
-		collapseText: true,
-		collapseAttribute: true,
-		boolAttribute: true,
-		standAlone: true
-	})
-})
+let renderEjsHtml = time('compile-ejs-html', () => ejsHtml.compile(source, {
+	collapseText: true,
+	collapseAttribute: true,
+	boolAttribute: true,
+	standAlone: true
+}))
 
 let data = {
 	lang: 'en-us',
@@ -73,13 +69,9 @@ let data = {
 	}]
 }
 
-let outEjs = time('render-ejs', function () {
-	return renderEjs(data)
-})
+time('render-ejs', () => renderEjs(data))
 
-let outEjsHtml = time('render-ejs-html', function () {
-	return renderEjsHtml(data)
-})
+time('render-ejs-html', () => renderEjsHtml(data))
 
 function time(name, fn) {
 	for (let i = 0; i < 1e3; i++) {
@@ -92,6 +84,7 @@ function time(name, fn) {
 		result = fn()
 	}
 	let dt = (Date.now() - start) / n
+	// eslint-disable-next-line no-console
 	console.log(`${name}: ${dt.toFixed(2)}ms`)
 	return result
 }

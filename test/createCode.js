@@ -1,12 +1,12 @@
-/*globals describe, it*/
+/* globals describe, it*/
 'use strict'
 
 let ejs = require('..'),
 	createCode = ejs.compile.createCode
 require('should')
 
-describe('createCode', function () {
-	it('should handle special static cases', function () {
+describe('createCode', () => {
+	it('should handle special static cases', () => {
 		createCode([], true, false).should.be.equal('return ""')
 		createCode([], true, true).should.be.equal('""')
 
@@ -14,7 +14,7 @@ describe('createCode', function () {
 		createCode(['hi'], true, true).should.be.equal('"hi"')
 	})
 
-	it('should generate a single expression when possible', function () {
+	it('should generate a single expression when possible', () => {
 		let tokens = getTokens('Hello <%= user %>')
 		createCode(tokens, false, false).should.be.equal([
 			'locals = locals || {};',
@@ -56,7 +56,7 @@ describe('createCode', function () {
 		createCode(tokens4, true, true).should.be.equal('(__l.s=1,__l.e=1,(user))')
 	})
 
-	it('should generate multiple statements when needed', function () {
+	it('should generate multiple statements when needed', () => {
 		let tokens = getTokens('<% if (true) { %>true<% } %>')
 		createCode(tokens, false, false).should.be.equal([
 			'locals = locals || {};',

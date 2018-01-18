@@ -1,11 +1,11 @@
-/*globals describe, it*/
+/* globals describe, it*/
 'use strict'
 
 let parse = require('..').parse
 require('should')
 
-describe('parse', function () {
-	it('should parse a literal text', function () {
+describe('parse', () => {
+	it('should parse a literal text', () => {
 		parse('A literal text').should.be.eql([{
 			type: 'text',
 			start: getPos(''),
@@ -21,7 +21,7 @@ describe('parse', function () {
 		}])
 	})
 
-	it('should parse EJS tags', function () {
+	it('should parse EJS tags', () => {
 		parse('<%eval%><%=escaped%><%-raw%>literal <%% text').should.be.eql([{
 			type: 'ejs-eval',
 			start: getPos('<%'),
@@ -45,7 +45,7 @@ describe('parse', function () {
 		}])
 	})
 
-	it('should parse comment tags', function () {
+	it('should parse comment tags', () => {
 		parse('<!--\n-- comment\n-->').should.be.eql([{
 			type: 'comment',
 			start: getPos('<!--'),
@@ -54,7 +54,7 @@ describe('parse', function () {
 		}])
 	})
 
-	it('should parse doctype tags', function () {
+	it('should parse doctype tags', () => {
 		parse('<!DOCTYPE html>').should.be.eql([{
 			type: 'doctype',
 			start: getPos('<!DOCTYPE '),
@@ -63,7 +63,7 @@ describe('parse', function () {
 		}])
 	})
 
-	it('should parse basic element tags', function () {
+	it('should parse basic element tags', () => {
 		parse('<div><input><input/></div>').should.be.eql([{
 			type: 'element',
 			start: getPos('<'),
@@ -91,7 +91,7 @@ describe('parse', function () {
 		}])
 	})
 
-	it('should parse open tags with literal attributes', function () {
+	it('should parse open tags with literal attributes', () => {
 		parse('<div a=no-quote \n b=\'s<i>ngle\' c="d<o>uble" d="" checked></div>').should.be.eql([{
 			type: 'element',
 			start: getPos('<'),
@@ -133,7 +133,7 @@ describe('parse', function () {
 		}])
 	})
 
-	it('should parse open tags with dynamic attributes', function () {
+	it('should parse open tags with dynamic attributes', () => {
 		let source = '<with-ejs attr="pre<%=code%>post"></with-ejs>'
 		parse(source).should.be.eql([{
 			type: 'element',
@@ -163,7 +163,7 @@ describe('parse', function () {
 		}])
 	})
 
-	it('should not parse tags inside scripts', function () {
+	it('should not parse tags inside scripts', () => {
 		parse('<scriPt><b>Not an element</c > </<> "<%=code%></scRipt>').should.be.eql([{
 			type: 'element',
 			start: getPos('<'),
