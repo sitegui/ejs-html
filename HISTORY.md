@@ -1,3 +1,57 @@
+# 5.0.0
+
+## Breaking changes
+* Removed: support for node 4
+* Changed: from `reduce(tokens[, compileDebug])` to `reduce(tokens[, options])`
+* Changed: use strict mode and do not wrap code in `with(locals)` by default.
+
+The old version (v4) compiled templates to sloppy JS mode and used the long-deprecated `with()` structure.
+The new (v5) version changes that, but allows one to opt-out.
+
+We used `with(locals)` to allow one to write `<%= x %>` instead of `<%= locals.x %>`, but employing `with()` forced
+the lib to compile to sloppy mode since this construct isn't allowed in strict mode.
+
+In this new version, we revisited that decision and prefered to drop `with` in favor of strict mode.
+To ease transition, you can opt-out and keep using the old behavior with the option `strictMode: false`.
+On the other hand, if don't want to keep writing `locals.` all the time, you can list which variables should be made
+available with the option `vars: ['someVar', 'anotherOne']`. See the examples below
+
+```js
+/**
+ * Old (v4)
+ */
+
+// Variables could be accessed directly, unless there were absent in the locals parameter
+ejs.render('<%= a %>', {a: 2}) // '2'
+ejs.render('<%= b %>', {a: 2}) // ReferenceError: b is not defined
+
+// In sloppy mode, weird things happen, like leaking to global context
+ejs.render('<% x = 17 %>') // ''
+x // 17
+
+/**
+ * New (v5)
+ */
+
+// Direct access does not work out of the box
+ejs.render('<%= a %>', {a: 2}) // ReferenceError: a is not defined
+
+// You have to be explicit. Either use the locals object or list variables to be made available
+ejs.render('<%= locals.a %>', {a: 2}) // '2'
+ejs.render('<%= a %>', {a: 2}, {vars: ['a']}) // '2'
+ejs.render('<%= b %>', {a: 2}, {vars: ['b']}) // ''
+
+// Code is executed in strict mode
+ejs.render('<% x = 17 %>') // ReferenceError: x is not defined
+
+// If you REALLY want to use old behavior
+ejs.render('<%= a %>', {a: 2}, {strictMode: false}) // '2'
+```
+
+## Other changes
+* Added: option `strictMode` (defaults to `true`)
+* Added: option `vars` (defaults to `[]`)
+
 # 4.0.3
 * Fixed: bug in minifier with spaces around some EJS tags
 
@@ -9,7 +63,7 @@
 
 # 4.0.0
 
-## Breaking Changes
+## Breaking changes
 * Removed: `compile.both()`, since it was not as useful as it has appeared at first and it would make the other improvents in this release harder to implement.
 * Removed: compile `debug` option, since it was not useful to be present in the public API
 

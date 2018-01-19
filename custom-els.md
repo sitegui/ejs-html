@@ -6,7 +6,7 @@ Custom HTML elements is a greater replacement for `include`. It delegates a port
 The basic example bellow defines a custom text input element, that has its input inside an label element and has a text title in front of it:
 ```html
 <label>
-	<span class="field-title"><%= title %></span>: <input name="<%=name%>">
+	<span class="field-title"><%= locals.title %></span>: <input name="<%=locals.name%>">
 </label>
 ```
 
@@ -85,7 +85,7 @@ One practical application of this feature is to allow both simple and complex co
 <!-- declaration -->
 <h1>
 	<eh-placeholder name="title">
-		<%= title %>
+		<%= locals.title %>
 	</eh-placeholder>
 </h1>
 <p><eh-placeholder></eh-placeholder></p>
