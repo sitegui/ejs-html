@@ -184,6 +184,56 @@ describe('parse', () => {
 			}]
 		}])
 	})
+
+	it('trim code in ejs tags', () => {
+		parse(`<%= same line %><%=
+		
+		multi
+		diff
+		lines
+		%>`).should.be.eql([{
+			type: 'ejs-escaped',
+			start: getPos('<%= '),
+			end: getPos('<%= same line'),
+			content: 'same line'
+		}, {
+			type: 'ejs-escaped',
+			start: getPos('<%= same line %><%=\n\t\t\n\t\t'),
+			end: getPos('<%= same line %><%=\n\t\t\n\t\tmulti\n\t\tdiff\n\t\tlines'),
+			content: 'multi\n\t\tdiff\n\t\tlines'
+		}])
+
+		parse('<%  a  %><%-  a  %><b x="<%=  a  %>"></b>').should.be.eql([{
+			type: 'ejs-eval',
+			start: getPos('<%  '),
+			end: getPos('<%  a'),
+			content: 'a'
+		}, {
+			type: 'ejs-raw',
+			start: getPos('<%  a  %><%-  '),
+			end: getPos('<%  a  %><%-  a'),
+			content: 'a'
+		}, {
+			type: 'element',
+			start: getPos('<%  a  %><%-  a  %><'),
+			end: getPos('<%  a  %><%-  a  %><b x="<%=  a  %>"></b>'),
+			name: 'b',
+			isVoid: false,
+			children: [],
+			attributes: [{
+				name: 'x',
+				isBoolean: false,
+				quote: '"',
+				type: 'attribute',
+				parts: [{
+					type: 'ejs-escaped',
+					start: getPos('<%  a  %><%-  a  %><b x="<%=  '),
+					end: getPos('<%  a  %><%-  a  %><b x="<%=  a'),
+					content: 'a'
+				}]
+			}]
+		}])
+	})
 })
 
 function getPos(str) {
