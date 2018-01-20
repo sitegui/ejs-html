@@ -84,7 +84,7 @@ describe('reduce', () => {
 			.should.be.equal('<a a checked multiple></a>')
 
 		minify('<a checked="<%=checked%>"></a>')
-			.should.be.equal('<a<%if (checked) {%> checked<%}%>></a>')
+			.should.be.equal('<a<%-(checked)?" checked":""%>></a>')
 	})
 
 	it('should keep whitespace inside <pre>-like tags', () => {
@@ -93,9 +93,9 @@ describe('reduce', () => {
 	})
 
 	it('should treat spaces around EJS tags correctly', () => {
-		minify('before  <%= 2 %>  after').should.be.equal('before <%= 2 %> after')
-		minify('before  <%- 2 %>  after').should.be.equal('before <%- 2 %> after')
-		minify('before  <% 2 %>  after').should.be.equal('before <% 2 %>after')
+		minify('before  <%= 2 %>  after').should.be.equal('before <%=2%> after')
+		minify('before  <%- 2 %>  after').should.be.equal('before <%-2%> after')
+		minify('before  <% 2 %>  after').should.be.equal('before <%2%>after')
 	})
 })
 
@@ -112,6 +112,8 @@ function minify(source) {
 	return reduce(parse(source)).map(e => {
 		if (typeof e === 'string') {
 			return e
+		} else if (e.type === 'source-builder') {
+			return `<%-${e.sourceBuilder.build().code}%>`
 		}
 		let c = e.type === 'ejs-eval' ? '' : (e.type === 'ejs-raw' ? '-' : '=')
 		return `<%${c}${e.content}%>`

@@ -17,7 +17,9 @@
 		"custom elements",
 		"web components"
 	],
-	"dependencies": {},
+	"dependencies": {
+		"source-map": "^0.6.1"
+	},
 	"license": "MIT",
 	"engines": {
 		"node": ">=6"

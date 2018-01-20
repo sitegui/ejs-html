@@ -44,14 +44,14 @@ describe('createCode', () => {
 	it('should compile with debug markers', () => {
 		check([
 			'First',
-			'<%=',
-			'a',
+			'<%=a',
+			'+b',
 			'%> and <%= b %>'
 		].join('\n'), {}, false, [
 			'"use strict";',
 			'locals=locals||{};',
 			'let __c=locals.__contents||{};',
-			'return "First\\n"+(__l.s=2,__l.e=4,__e(a))+" and "+(__l.s=__l.e=4,__e(b));'
+			'return "First\\n"+(__l.s=2,__l.e=3,__e(a\n+b))+" and "+(__l.s=__l.e=4,__e(b));'
 		])
 
 		check([
@@ -60,7 +60,7 @@ describe('createCode', () => {
 			'a',
 			'%> and <%= b %>'
 		].join('\n'), {}, true, [
-			'"First\\n"+(__l.s=2,__l.e=4,__e(a))+" and "+(__l.s=__l.e=4,__e(b))'
+			'"First\\n"+(__l.s=__l.e=3,__e(a))+" and "+(__l.s=__l.e=4,__e(b))'
 		])
 	})
 
@@ -150,12 +150,12 @@ describe('createCode', () => {
 			'return __e(a+b);'
 		])
 	})
-
 })
 
 function check(source, options, asInnerExpression, code) {
 	options = prepareOptions(options)
 	let tokens = ejs.reduce(ejs.parse(source), options)
 
-	createCode(tokens, options, asInnerExpression).should.be.equal(code.join(''))
+	let builder = createCode(tokens, options, asInnerExpression)
+	builder.build().code.should.be.equal(code.join(''))
 }
