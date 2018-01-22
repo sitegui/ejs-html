@@ -1,7 +1,8 @@
 /* globals describe, it*/
 'use strict'
 
-let compile = require('..').compile
+let compile = require('..').compile,
+	sourceMap = require('source-map')
 require('should')
 
 describe('compile', () => {
@@ -90,5 +91,56 @@ hi`
 		compile('<my-tag><my-tag2></my-tag2></my-tag>', {
 			compileDebug: false
 		})({}, () => 'hi').should.be.equal('hi')
+	})
+
+	it('should generate source map', done => {
+		let source = `Basic tags: <%= user %> <%- user %> <% if (true) { %>
+			<tag simple="yes" active concat="a and <%= b %>"></tag>
+			<custom-tag simple="yes" active concat="a and <%= b %>" obj="<%= {a: 2} %>">
+				outside
+				<eh-content name="named">inside</eh-content>
+			</custom-tag>
+			<eh-placeholder>not named</eh-placeholder>
+			<eh-placeholder>named</eh-placeholder>
+			<% } %>`,
+			fn = compile(source, {
+				sourceMap: true
+			})
+
+		fn.code.should.be.eql('"use strict";locals=locals||{};let __c=locals.__contents||{};let __o="Basic tags: "+(__l.s=__l.e=1,__e(user))+" "+(__l.s=__l.e=1,(user))+" ";__l.s=__l.e=1;if (true) {\n' +
+			'__o+="<tag simple=yes active concat=\\"a and "+(__l.s=__l.e=2,__e(b))+"\\"></tag>\\n"+(__l.s=3,__l.e=6,renderCustom("custom-tag",{"simple":"yes","active":true,"concat":"a and "+String((__l.s=__l.e=3,b)),"obj":(__l.s=__l.e=3,{a: 2}),__contents:{"":"\\noutside\\n","named":"inside"}},__l.s=3,__l.e=6))+"\\n"+(__l.s=__l.e=7,__c[""]&&/\\S/.test(__c[""])?__c[""]:"not named")+"\\n"+(__l.s=__l.e=8,__c[""]&&/\\S/.test(__c[""])?__c[""]:"named")+"\\n";__l.s=__l.e=9;}\n' +
+			'return __o;')
+		fn.map.should.be.eql('{"version":3,"sources":["ejs"],"names":[],"mappings":"uGAAgB,I,uBAAY,I,qBAAW,W;iEACO,C,kIACO,C,wBAAe,M,6NAM9D,C"}')
+
+		new sourceMap.SourceMapConsumer(fn.map).then(consumer => {
+			consumer.computeColumnSpans()
+			let codes = []
+			consumer.eachMapping(mapping => {
+				if (!mapping.originalLine) {
+					return
+				}
+				let length = mapping.lastGeneratedColumn - mapping.generatedColumn + 1,
+					original = extract(source, mapping.originalLine, mapping.originalColumn, length),
+					generated = extract(fn.code, mapping.generatedLine, mapping.generatedColumn, length)
+				original.should.be.eql(generated)
+				codes.push(original)
+			})
+
+			codes.should.be.eql([
+				'user',
+				'user',
+				'if (true) {',
+				'b',
+				'b',
+				'{a: 2}',
+				'}'
+			])
+
+			done()
+		})
+
+		function extract(str, line, column, length) {
+			return str.split('\n')[line - 1].slice(column, column + length)
+		}
 	})
 })
