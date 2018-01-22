@@ -157,5 +157,5 @@ function check(source, options, asInnerExpression, code) {
 	let tokens = ejs.reduce(ejs.parse(source), options)
 
 	let builder = createCode(tokens, options, asInnerExpression)
-	builder.build().code.should.be.equal(code.join(''))
+	builder.build(source).code.should.be.equal(code.join(''))
 }

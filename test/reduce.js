@@ -113,7 +113,7 @@ function minify(source) {
 		if (typeof e === 'string') {
 			return e
 		} else if (e.type === 'source-builder') {
-			return `<%-${e.sourceBuilder.build().code}%>`
+			return `<%-${e.sourceBuilder.build(source).code}%>`
 		}
 		let c = e.type === 'ejs-eval' ? '' : (e.type === 'ejs-raw' ? '-' : '=')
 		return `<%${c}${e.content}%>`
