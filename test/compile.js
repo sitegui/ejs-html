@@ -93,7 +93,11 @@ hi`
 		})({}, () => 'hi').should.be.equal('hi')
 	})
 
-	it('should generate source map', done => {
+	it('should generate source map', function (done) {
+		if (process.version < 'v8') {
+			return this.skip()
+		}
+
 		let source = `Basic tags: <%= user %> <%- user %> <% if (true) { %>
 			<tag simple="yes" active concat="a and <%= b %>"></tag>
 			<custom-tag simple="yes" active concat="a and <%= b %>" obj="<%= {a: 2} %>">

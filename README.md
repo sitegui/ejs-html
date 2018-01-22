@@ -141,7 +141,7 @@ Custom elements is a more powerful replacement for ejs' include feature.
 This is the most basic usage of this feature. For more (like passing JS values and multiple content areas), see [custom-els.md](https://github.com/sitegui/ejs-html/blob/master/custom-els.md)
 
 ## Source maps
-Compile with support for source map generation
+Compile with support for source map generation (requires node >= v8, since `source-map` has dropped support for older versions)
 ```js
 let fn = ejs.compile('Hello <%= locals.world %>', {sourceMap: true})
 // The actual result may vary
