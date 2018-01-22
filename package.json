@@ -1,6 +1,6 @@
 {
 	"name": "ejs-html",
-	"version": "5.0.0",
+	"version": "5.1.0",
 	"author": "Sitegui <sitegui@sitegui.com.br>",
 	"description": "Embedded JavaScript HTML templates. An implementation of EJS focused on run-time performance, HTML syntax checking, minified HTML output and custom HTML elements.",
 	"main": "./index.js",

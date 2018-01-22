@@ -1,3 +1,6 @@
+# 5.1.0
+* Added: `sourceMap` option to create source maps
+
 # 5.0.0
 
 ## Breaking changes

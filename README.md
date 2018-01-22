@@ -140,6 +140,16 @@ Custom elements is a more powerful replacement for ejs' include feature.
 
 This is the most basic usage of this feature. For more (like passing JS values and multiple content areas), see [custom-els.md](https://github.com/sitegui/ejs-html/blob/master/custom-els.md)
 
+## Source maps
+Compile with support for source map generation
+```js
+let fn = ejs.compile('Hello <%= locals.world %>', {sourceMap: true})
+// The actual result may vary
+fn.code // "use strict";locals=locals||{};let __c=locals.__contents||{};return "Hello "+(__l.s=__l.e=1,__e(locals.world));
+fn.map // {"version":3,"sources":["ejs"],"names":[],"mappings":"gGAAU,Y","file":"ejs.js"}
+fn.mapWithCode // {"version":3,"sources":["ejs"],"names":[],"mappings":"gGAAU,Y","file":"ejs.js","sourcesContent":["Hello <%= locals.world %>"]}
+```
+
 ## Missing features
 The following list of features are supported in other EJS implementations, but not by this one (at least, yet):
 
@@ -160,20 +170,31 @@ Compile the given EJS-HTML source into a render function. `options` is an option
 * `transformer`: a function that can transform the parsed HTML element tree, before the minification and compilation. This should return a new array of tokens or `undefined` to use the same (in case of in-place changes). Consult the definition of a `Token` in the [parse.js](https://github.com/sitegui/ejs-html/blob/master/lib/parse.js) file.
 * `strictMode`: if `false`, use sloppy mode and wrap the code in a `with(locals) {}` block (defaults to `true`).
 * `vars`: an array of var names that will be exposed from `locals` (defaults to `[]`).
+* `sourceMap`: if `true`, create and return the source map
 
 This will return a compiled render function that can then be called like: `render(locals[, renderCustom])`. `locals` is the data object used to fill the template. `renderCustom` is an optional function used to render custom elements, see [custom-els.md](https://github.com/sitegui/ejs-html/blob/master/custom-els.md) for more info about it.
+
+The returned function has three extra properties if `sourceMap` is active:
+* `fn.code`: compiled JS code
+* `fn.map`: source map without the source code
+* `fn.mapWithCode`: source map with the source code
 
 ### compile.standAlone(source[, options])
 Like `compile()`, but returns the function body code as a string, so that it can be exported somewhere else. A use case for this is compile the EJS template in the server, export the function to the client and render in the browser:
 
 ```js
 // On the server
-let functionBody = ejs.compile.standAlone('<p>Hi <%=name%></p>')
+let functionBody = ejs.compile.standAlone('<p>Hi <%=name%></p>', {vars: ['name']})
 
 // On the client
 var render = new Function('locals, renderCustom', functionBody)
 render({name: 'you'}) // <p>Hi you</p>
 ```
+
+### compile.standAloneAsObject(source[, options])
+Like `compile.standAlone()`, but returns an object with three properties:
+* `obj.code`: the compiled code, the same value returned by `compile.standAlone()`
+* `obj.map` and `obj.mapWithCode`: extra properties when `sourceMap` option is active
 
 ### render(source[, locals[, options]])
 Just a convinience for `compile(source, options)(locals)`.
