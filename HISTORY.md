@@ -1,3 +1,7 @@
+# 5.1.1
+* Fixed: bug with empty EJS eval tags (`<% %>`)
+* Fixed: bug with text after EJS tag inside custom tag (`<my-tag><%= a %> text</my-tag>`)
+
 # 5.1.0
 * Added: `sourceMap` option to create source maps
 
