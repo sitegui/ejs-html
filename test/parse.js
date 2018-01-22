@@ -22,25 +22,30 @@ describe('parse', () => {
 	})
 
 	it('should parse EJS tags', () => {
-		parse('<%eval%><%=escaped%><%-raw%>literal <%% text').should.be.eql([{
+		parse('<%eval%><% %><%=escaped%><%-raw%>literal <%% text').should.be.eql([{
 			type: 'ejs-eval',
 			start: getPos('<%'),
 			end: getPos('<%eval'),
 			content: 'eval'
 		}, {
+			type: 'ejs-eval',
+			start: getPos('<%eval%><% '),
+			end: getPos('<%eval%><% '),
+			content: ''
+		}, {
 			type: 'ejs-escaped',
-			start: getPos('<%eval%><%='),
-			end: getPos('<%eval%><%=escaped'),
+			start: getPos('<%eval%><% %><%='),
+			end: getPos('<%eval%><% %><%=escaped'),
 			content: 'escaped'
 		}, {
 			type: 'ejs-raw',
-			start: getPos('<%eval%><%=escaped%><%-'),
-			end: getPos('<%eval%><%=escaped%><%-raw'),
+			start: getPos('<%eval%><% %><%=escaped%><%-'),
+			end: getPos('<%eval%><% %><%=escaped%><%-raw'),
 			content: 'raw'
 		}, {
 			type: 'text',
-			start: getPos('<%eval%><%=escaped%><%-raw%>'),
-			end: getPos('<%eval%><%=escaped%><%-raw%>literal <%% text'),
+			start: getPos('<%eval%><% %><%=escaped%><%-raw%>'),
+			end: getPos('<%eval%><% %><%=escaped%><%-raw%>literal <%% text'),
 			content: 'literal <%% text'
 		}])
 	})
