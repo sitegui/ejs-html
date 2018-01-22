@@ -150,6 +150,18 @@ describe('createCode', () => {
 			'return __e(a+b);'
 		])
 	})
+
+	it('should', () => {
+		check('<% a() %> ', {}, true, [
+			'(function(){',
+			'let __o="";',
+			'__l.s=__l.e=1;',
+			'a()\n',
+			'__o+=" ";',
+			'return __o;',
+			'})()'
+		])
+	})
 })
 
 function check(source, options, asInnerExpression, code) {
