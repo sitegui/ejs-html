@@ -1,3 +1,6 @@
+# 5.1.4
+* Fixed: missing \n
+
 # 5.1.3
 * Fixed: fix weird source map when an EJS tag spans multiple lines
 
