@@ -1,3 +1,6 @@
+# 5.1.3
+* Fixed: fix weird source map when an EJS tag spans multiple lines
+
 # 5.1.2
 * Fixed: `stricMode` not working for `compile.standAlone`
 
