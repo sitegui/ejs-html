@@ -1,3 +1,6 @@
+# 5.1.5
+* Fixed: compiler emitted wrong JS code when dealing with placeholders or boolean attributes
+
 # 5.1.4
 * Fixed: missing \n
 
