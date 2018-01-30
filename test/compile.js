@@ -148,4 +148,24 @@ hi`
 			return str.split('\n')[line - 1].slice(column, column + length)
 		}
 	})
+
+	it('should check for placeholder emptiness the same way regardless compileDebug', () => {
+		compile('out <eh-placeholder>in</eh-placeholder>')({}).should.be.eql('out in')
+
+		compile('out <eh-placeholder>in</eh-placeholder>', {
+			compileDebug: false
+		})({}).should.be.eql('out in')
+	})
+
+	it('should check for boolean attributes the same way regardless compileDebug', () => {
+		compile('<a b=c selected="<%= locals.x %>"></a>')({
+			x: false
+		}).should.be.eql('<a b=c></a>')
+
+		compile('<a b=c selected="<%= locals.x %>"></a>', {
+			compileDebug: false
+		})({
+			x: false
+		}).should.be.eql('<a b=c></a>')
+	})
 })
